@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.PromoModel;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Repository
+public class PromoDao {
+    
+    @Autowired
+    private SessionFactory sessionFactory;
+    
+    public List<PromoModel> getPromoBySinceDate(Date sinceDate){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d"
+                        + " where (m.CREATE_DATE >= :since_date or m.UPDATE_DATE >= :since_date) and d.PROMO_DTL_INVALID_DATE >= :tgl "
+                        + " order by m.PROMO_MST_CODE asc")
+                .setParameter("since_date", sinceDate)
+                .setParameter("tgl", new Date())
+                .list();
+    }
+
+     public List<PromoModel> getPromoByAll(){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d where d.PROMO_DTL_INVALID_DATE >= :tgl order by m.PROMO_MST_CODE asc")
+                .setParameter("tgl", new Date())
+                .list();
+    }
+    
+}

@@ -1,0 +1,115 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master.dto;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class PromoDetailDto {
+    private String detailId;
+    private String detailDescription;
+    private String branch;
+    private String dealerId;
+    private String objectCode;
+    private String objectGroup;  
+    private String ratePromo;
+    private String startDate;
+    private String endDate;
+    
+
+    public PromoDetailDto() {
+    }
+
+    public PromoDetailDto(String detailId, String detailDescription, String branch, String dealerId, String objectCode, String objectGroup, String ratePromo, String startDate, String endDate) {
+        this.detailId = detailId;
+        this.detailDescription = detailDescription;
+        this.branch = branch;
+        this.dealerId = dealerId;
+        this.objectCode = objectCode;
+        this.objectGroup = objectGroup;
+        this.ratePromo = ratePromo;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public String getDealerId() {
+        return dealerId;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
+    public String getObjectCode() {
+        return objectCode;
+    }
+
+    public void setObjectCode(String objectCode) {
+        this.objectCode = objectCode;
+    }
+
+    public String getObjectGroup() {
+        return objectGroup;
+    }
+
+    public void setObjectGroup(String objectGroup) {
+        this.objectGroup = objectGroup;
+    }
+
+   
+
+    public String getRatePromo() {
+        return ratePromo;
+    }
+
+    public void setRatePromo(String ratePromo) {
+        this.ratePromo = ratePromo;
+    }
+
+    public String getDetailId() {
+        return detailId;
+    }
+
+    public void setDetailId(String detailId) {
+        this.detailId = detailId;
+    }
+
+    public String getDetailDescription() {
+        return detailDescription;
+    }
+
+    public void setDetailDescription(String detailDescription) {
+        this.detailDescription = detailDescription;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+    
+    
+}

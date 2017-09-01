@@ -1,0 +1,314 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import com.fif.ws.model.customer.*;
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "FS_MST_CUST_IND")
+public class CustomerModel {
+    @Id
+    private String CUST_NO;
+    private String CUST_NAME;
+    private String KTP_CUST_NAME ;
+    private String CUST_TITLE;
+    private String CUST_SEX;
+    private String CUST_CATEGORY;
+    private String BIRTH_PLACE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date BIRTH_DATE;
+    private String MOTHERS_NAME;
+    private String CUST_TYPE_ID;
+    private String OCPT_TYPE;
+    private String OCPT_CODE;
+    private String OCPT_SUB_CODE;
+    private String EDU_TYPE;
+    private String RELG_ID;
+    private String MARITAL_STAT;
+    private String HOUSE_STAT;
+    private String BRANCH_ID;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date UPDATE_DATE;
+
+    /**
+     * @return the CUST_NO
+     */
+    public String getCUST_NO() {
+        return CUST_NO;
+    }
+
+    /**
+     * @param CUST_NO the CUST_NO to set
+     */
+    public void setCUST_NO(String CUST_NO) {
+        this.CUST_NO = CUST_NO;
+    }
+
+    /**
+     * @return the CUST_NAME
+     */
+    public String getCUST_NAME() {
+        return CUST_NAME;
+    }
+
+    /**
+     * @param CUST_NAME the CUST_NAME to set
+     */
+    public void setCUST_NAME(String CUST_NAME) {
+        this.CUST_NAME = CUST_NAME;
+    }
+
+    /**
+     * @return the KTP_CUST_NAME
+     */
+    public String getKTP_CUST_NAME() {
+        return KTP_CUST_NAME;
+    }
+
+    /**
+     * @param KTP_CUST_NAME the KTP_CUST_NAME to set
+     */
+    public void setKTP_CUST_NAME(String KTP_CUST_NAME) {
+        this.KTP_CUST_NAME = KTP_CUST_NAME;
+    }
+
+    /**
+     * @return the CUST_TITLE
+     */
+    public String getCUST_TITLE() {
+        return CUST_TITLE;
+    }
+
+    /**
+     * @param CUST_TITLE the CUST_TITLE to set
+     */
+    public void setCUST_TITLE(String CUST_TITLE) {
+        this.CUST_TITLE = CUST_TITLE;
+    }
+
+    /**
+     * @return the CUST_SEX
+     */
+    public String getCUST_SEX() {
+        return CUST_SEX;
+    }
+
+    /**
+     * @param CUST_SEX the CUST_SEX to set
+     */
+    public void setCUST_SEX(String CUST_SEX) {
+        this.CUST_SEX = CUST_SEX;
+    }
+
+    /**
+     * @return the CUST_CATEGORY
+     */
+    public String getCUST_CATEGORY() {
+        return CUST_CATEGORY;
+    }
+
+    /**
+     * @param CUST_CATEGORY the CUST_CATEGORY to set
+     */
+    public void setCUST_CATEGORY(String CUST_CATEGORY) {
+        this.CUST_CATEGORY = CUST_CATEGORY;
+    }
+
+    /**
+     * @return the BIRTH_PLACE
+     */
+    public String getBIRTH_PLACE() {
+        return BIRTH_PLACE;
+    }
+
+    /**
+     * @param BIRTH_PLACE the BIRTH_PLACE to set
+     */
+    public void setBIRTH_PLACE(String BIRTH_PLACE) {
+        this.BIRTH_PLACE = BIRTH_PLACE;
+    }
+
+    /**
+     * @return the BIRTH_DATE
+     */
+    public Date getBIRTH_DATE() {
+        return BIRTH_DATE;
+    }
+
+    /**
+     * @param BIRTH_DATE the BIRTH_DATE to set
+     */
+    public void setBIRTH_DATE(Date BIRTH_DATE) {
+        this.BIRTH_DATE = BIRTH_DATE;
+    }
+
+    /**
+     * @return the MOTHERS_NAME
+     */
+    public String getMOTHERS_NAME() {
+        return MOTHERS_NAME;
+    }
+
+    /**
+     * @param MOTHERS_NAME the MOTHERS_NAME to set
+     */
+    public void setMOTHERS_NAME(String MOTHERS_NAME) {
+        this.MOTHERS_NAME = MOTHERS_NAME;
+    }
+
+    /**
+     * @return the CUST_TYPE_ID
+     */
+    public String getCUST_TYPE_ID() {
+        return CUST_TYPE_ID;
+    }
+
+    /**
+     * @param CUST_TYPE_ID the CUST_TYPE_ID to set
+     */
+    public void setCUST_TYPE_ID(String CUST_TYPE_ID) {
+        this.CUST_TYPE_ID = CUST_TYPE_ID;
+    }
+
+    /**
+     * @return the OCPT_TYPE
+     */
+    public String getOCPT_TYPE() {
+        return OCPT_TYPE;
+    }
+
+    /**
+     * @param OCPT_TYPE the OCPT_TYPE to set
+     */
+    public void setOCPT_TYPE(String OCPT_TYPE) {
+        this.OCPT_TYPE = OCPT_TYPE;
+    }
+
+    /**
+     * @return the OCPT_CODE
+     */
+    public String getOCPT_CODE() {
+        return OCPT_CODE;
+    }
+
+    /**
+     * @param OCPT_CODE the OCPT_CODE to set
+     */
+    public void setOCPT_CODE(String OCPT_CODE) {
+        this.OCPT_CODE = OCPT_CODE;
+    }
+
+    /**
+     * @return the OCPT_SUB_CODE
+     */
+    public String getOCPT_SUB_CODE() {
+        return OCPT_SUB_CODE;
+    }
+
+    /**
+     * @param OCPT_SUB_CODE the OCPT_SUB_CODE to set
+     */
+    public void setOCPT_SUB_CODE(String OCPT_SUB_CODE) {
+        this.OCPT_SUB_CODE = OCPT_SUB_CODE;
+    }
+
+    /**
+     * @return the EDU_TYPE
+     */
+    public String getEDU_TYPE() {
+        return EDU_TYPE;
+    }
+
+    /**
+     * @param EDU_TYPE the EDU_TYPE to set
+     */
+    public void setEDU_TYPE(String EDU_TYPE) {
+        this.EDU_TYPE = EDU_TYPE;
+    }
+
+    /**
+     * @return the RELG_ID
+     */
+    public String getRELG_ID() {
+        return RELG_ID;
+    }
+
+    /**
+     * @param RELG_ID the RELG_ID to set
+     */
+    public void setRELG_ID(String RELG_ID) {
+        this.RELG_ID = RELG_ID;
+    }
+
+    /**
+     * @return the MARITAL_STAT
+     */
+    public String getMARITAL_STAT() {
+        return MARITAL_STAT;
+    }
+
+    /**
+     * @param MARITAL_STAT the MARITAL_STAT to set
+     */
+    public void setMARITAL_STAT(String MARITAL_STAT) {
+        this.MARITAL_STAT = MARITAL_STAT;
+    }
+
+    /**
+     * @return the HOUSE_STAT
+     */
+    public String getHOUSE_STAT() {
+        return HOUSE_STAT;
+    }
+
+    /**
+     * @param HOUSE_STAT the HOUSE_STAT to set
+     */
+    public void setHOUSE_STAT(String HOUSE_STAT) {
+        this.HOUSE_STAT = HOUSE_STAT;
+    }
+
+    /**
+     * @return the BRANCH_ID
+     */
+    public String getBRANCH_ID() {
+        return BRANCH_ID;
+    }
+
+    /**
+     * @param BRANCH_ID the BRANCH_ID to set
+     */
+    public void setBRANCH_ID(String BRANCH_ID) {
+        this.BRANCH_ID = BRANCH_ID;
+    }
+
+    /**
+     * @return the UPDATE_DATE
+     */
+    public Date getUPDATE_DATE() {
+        return UPDATE_DATE;
+    }
+
+    /**
+     * @param UPDATE_DATE the UPDATE_DATE to set
+     */
+    public void setUPDATE_DATE(Date UPDATE_DATE) {
+        this.UPDATE_DATE = UPDATE_DATE;
+    }
+    
+            
+    
+}

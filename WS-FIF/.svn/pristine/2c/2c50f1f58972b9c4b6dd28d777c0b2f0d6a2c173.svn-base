@@ -1,0 +1,44 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.ObjectCodesModel;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+@Repository
+public class ObjectCodesDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public List<ObjectCodesModel> getObjectCodesByObjGrp(String obj_grp) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel where OBJ_GRP=?")
+                .setParameter(0, obj_grp)
+                .list();
+    }
+    
+
+    public List<ObjectCodesModel> getObjectCodesMpf() {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel where IS_VEHICLE='N'")
+                .list();
+    }
+    
+     public List<ObjectCodesModel> getObjectCodesMpfByDate(Date since_date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel o where o.IS_VEHICLE='N' and (o.CREATE_DATE>=? or o.UPDATE_DATE>=?)")
+                .list();
+    }
+}

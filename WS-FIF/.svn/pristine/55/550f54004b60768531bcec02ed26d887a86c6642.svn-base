@@ -1,0 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import oracle.jdbc.OracleTypes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+@Repository
+public class OrderFullDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public String genApplicationNo(String branchId) {
+        String applicationNo = null;
+        try {
+            String sql = "{ ? = call ORDMGMT.OM_F_GEN_APPLNO(?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.registerOutParameter(1, OracleTypes.VARCHAR);
+            cst.setString(2, branchId);
+            cst.registerOutParameter(3, OracleTypes.VARCHAR);
+            cst.execute();
+            applicationNo   = (String) cst.getObject(1);
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       return applicationNo;
+    }
+    
+    public void orderFull(Object object){
+        String _sqlSelect1= "SELECT CUST_TYPE, KTP_CUST_TYPE FROM FIFAPPS.FS_MST_CUST_IND WHERE CUST_NO=custNo";
+        String _sqlSelect2= "SELECT OBJ_GRP FROM ORDMGMT.OM_MST_OBJ_GROUP WHERE OBJ_CODE=:objCode";
+        
+        
+        String _sql1 = "INSERT INTO ORDMGMT.OM_TRN_APPL_HDR (BRANCH_ID, APPL_NO,"
+                + "SERV_OFFICE_CODE, APPL_DATE, CUST_TYPE, CUST_NO, KTP_CUST_NAME, PLATFORM, BUSS_UNIT, PROG_CODE, "
+                + "SUPP_CODE, SO_CODE, TOT_PROD_PRICE, TOTAL_DP, TOTAL_OBJ, BRANCH_AR, CREATE_BY, CREATE_DATE) "
+                + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";        
+        String _sql2="INSERT INTO ORDMGMT.OM_TRN_APPL_OBJECT (APPL_NO, BRANCH_ID, SEQ_NO, OBJ_GRP, OBJ_CODE, NEW_USED,"
+                + " OBJ_BRAND, OBJ_MODEL, OBJ_TYPE, OBJ_SIZE, OBJ_TAHUN, OBJ_PRICE,"
+                + " QTY, CUST_DP, MONTH_INST, INS_PRODUCT, RATE_NO, SERIAL_NO,"
+                + " NOSIN, NOKA, NO_POLISI, WARNA, STNK_DATE, CREATE_BY, CREATE_DATE) "
+                + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String _sql3="INSERT INTO ORDMGMT.OM_TRN_APPL_MS_LVL_OBJECT (MS_CODE, MS_AMT) "
+                + "values (?,?)";
+        String _sql4="INSERT INTO ORDMGMT.OM_TRN_APPL_MS_LVL_KONTRAK(DEFF_AMOUNT, MS_CODE) "
+                + "values (?,?)";
+        String _sql5="INSERT INTO ORDMGMT.OM_TRN_APPL_DOC(DOC_CODE, REQUIRED)"
+                + " values(?,?)";
+        String _sql6="INSERT INTO ORDMGMT.OM_TRN_APPL_PROMO_LIST(PROMO_MST_CODE, PROMO_DTL_ID) "
+                + "values(?,?)";
+        String _sql7="INSERT INTO ORDMGMT.OM_TRN_APPL_STRUCRDT(INTEREST_TYPE, TENOR, PERIODE, "
+                + "PERIODE_TYPE, ADV_ARREAR, ADMIN, CHOICE_INST_RATE, ACTUAL_PCT_FLAT, TOP, PCT_RESIDU, AMT_RESIDU) "
+                + "values(?,?,?,?,?,?,?,?,?,?,?)";
+      
+        
+    }
+}

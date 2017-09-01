@@ -1,0 +1,90 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.dao;
+
+import com.fif.ws.model.customer.dto.CustomerCollectAddressDto;
+import com.fif.ws.model.customer.dto.CustomerEmergencyAddressDto;
+import com.fif.ws.model.customer.dto.CustomerHeaderDto;
+import com.fif.ws.model.customer.dto.CustomerHomeAddressDto;
+import com.fif.ws.model.customer.dto.CustomerIdAddressDto;
+import com.fif.ws.model.customer.dto.CustomerMailAddressDto;
+import com.fif.ws.model.customer.dto.CustomerOfficeAddressDto;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Repository
+public class CustomerDao {
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    public List<CustomerHeaderDto> getCustomerByCustNo(String cust_no){
+        String _sql = "select a.CUST_NO, a.CUST_NAME, b.KTP_CUST_NAME," +
+            "b.CUST_TITLE, b.CUST_SEX, b.BIRTH_PLACE, to_char(b.BIRTH_DATE, 'YYYYMMDD') birthDate," +
+            "b.MOTHERS_NAME, b.CUST_CATEGORY, '' maritalStatus," +
+            "'' mainMobilePhone," +
+            "a.ID_CUST_ADDR, a.ID_CUST_RT,a.ID_CUST_RW,a.ID_CUST_KEL,a.ID_CUST_KEC,a.ID_CUST_CITY,a.ID_CUST_ZIP,a.ID_CUST_PROV," +
+            "a.MAIL_ADDR,a.MAIL_RT,a.MAIL_RW,a.MAIL_KEL,a.MAIL_KEC,a.MAIL_CITY,a.MAIL_ZIP,a.MAIL_PROV,a.MAIL_FIXPH_AREA || '-' || a.MAIL_FIXPHONE MAIL_FIXPHONE,a.MAIL_MOBPHONE," +
+            "b.EMER_ADDR,b.EMER_RT,b.EMER_RW,b.EMER_KEL,b.EMER_KEC,b.EMER_CITY,b.EMER_ZIP,b.EMER_PROV,b.EMER_FIXPH_AREA || '-' || b.EMER_FIXPHONE EMER_FIXPHONE,b.EMER_MOBPHONE," +
+            "b.OFF_ADDR,b.OFF_RT,b.OFF_RW,b.OFF_KEL,b.OFF_KEC,b.OFF_CITY,b.OFF_ZIP,b.OFF_PROV,b.OFF_FIXPH_AREA || '-' || b.OFF_FIXPHONE OFF_FIXPHONE,b.OFF_MOBPHONE," +
+            "b.CUST_ADDR,b.CUST_RT,b.CUST_RW,b.CUST_KEL,b.CUST_KEC,b.CUST_CITY,b.CUST_ZIP,b.CUST_PROV,b.CUST_FIXPH_AREA || '-' || b.CUST_FIXPHONE CUST_FIXPHONE,b.CUST_MOBPHONE," +
+            "d.COLLEC_NAME,d.COLLEC_ADDR,d.COLLEC_RT,d.COLLEC_RW,d.COLLEC_KEL,d.COLLEC_KEC,d.COLLEC_CITY,d.COLLEC_ZIP,d.COLLEC_PROV,d.COLLEC_FIXPH_AREA," +
+            "d.COLLEC_FIXPHONE,d.COLLEC_FAX_AREA,d.COLLEC_FAXIMILE,d.COLLEC_MOBPHONE,d.COLLEC_EMAIL,d.COLLEC_MOBPHONE_2,"+
+            "(select max(NEXT_DUE_DATE) from ACCTMGMT. AR_TRN_SUM_CONTRACTS " +
+            "where CUST_NO = a.CUST_NO) NEXT_DUE_DATE" +
+            " from FIFAPPS.FS_MST_CUST a, FIFAPPS.FS_MST_CUST_IND b, ORDMGMT.OM_TRN_APPL_HDR c, ORDMGMT.OM_TRN_APPL_ADDR d" +
+            " where a.CUST_NO = ? and rownum < 2" +
+            " and a.CUST_NO = b.CUST_NO" +
+            " and b.CUST_NO = c.CUST_NO" +
+            " and c.APPL_NO = d.APPL_NO";
+        
+        return jdbcTemplate.query(_sql, new RowMapper<CustomerHeaderDto>() {
+
+            public CustomerHeaderDto mapRow(ResultSet rs, int i) throws SQLException {
+                CustomerHeaderDto cust = new CustomerHeaderDto(rs.getString("CUST_NO"), rs.getString("CUST_NAME"), rs.getString("KTP_CUST_NAME"),
+                        rs.getString("CUST_TITLE"), rs.getString("CUST_SEX"), rs.getString("BIRTH_PLACE"), rs.getString("birthDate"), 
+                        rs.getString("MOTHERS_NAME"), rs.getString("CUST_CATEGORY"), rs.getString("maritalStatus"), rs.getString("mainMobilePhone"),
+                        rs.getString("NEXT_DUE_DATE"), 
+                        new CustomerIdAddressDto(rs.getString("ID_CUST_ADDR"), rs.getString("ID_CUST_RT"), rs.getString("ID_CUST_RW"),
+                                rs.getString("ID_CUST_KEL"), rs.getString("ID_CUST_KEC"), rs.getString("ID_CUST_CITY"),
+                                rs.getString("ID_CUST_PROV"), rs.getString("ID_CUST_ZIP")), 
+                        new CustomerMailAddressDto(rs.getString("MAIL_ADDR"), rs.getString("MAIL_RT"),
+                                rs.getString("MAIL_RW"), rs.getString("MAIL_KEL"), rs.getString("MAIL_KEC"),
+                                rs.getString("MAIL_CITY"), rs.getString("MAIL_PROV"), rs.getString("MAIL_ZIP"),
+                                rs.getString("MAIL_FIXPHONE"), rs.getString("MAIL_MOBPHONE")),
+                        new CustomerCollectAddressDto(rs.getString("COLLEC_NAME"),rs.getString("COLLEC_ADDR"), rs.getString("COLLEC_RT"),
+                                rs.getString("COLLEC_RW"), rs.getString("COLLEC_KEL"), rs.getString("COLLEC_KEC"),
+                                rs.getString("COLLEC_CITY"), rs.getString("COLLEC_PROV"), rs.getString("COLLEC_ZIP"),
+                                rs.getString("COLLEC_FIXPH_AREA"), rs.getString("COLLEC_FIXPHONE"), rs.getString("COLLEC_FAX_AREA"),
+                                rs.getString("COLLEC_FAXIMILE"), rs.getString("COLLEC_MOBPHONE"), rs.getString("COLLEC_MOBPHONE_2"),
+                                rs.getString("COLLEC_EMAIL")),
+                        new CustomerEmergencyAddressDto(rs.getString("EMER_ADDR"), rs.getString("EMER_RT"),
+                                rs.getString("EMER_RW"), rs.getString("EMER_KEL"), rs.getString("EMER_KEC"),
+                                rs.getString("EMER_CITY"), rs.getString("EMER_PROV"), rs.getString("EMER_ZIP"),
+                                rs.getString("EMER_FIXPHONE"), rs.getString("EMER_MOBPHONE")), 
+                        new CustomerHomeAddressDto(rs.getString("CUST_ADDR"), rs.getString("CUST_RT"),
+                                rs.getString("CUST_RW"), rs.getString("CUST_KEL"), rs.getString("CUST_KEC"),
+                                rs.getString("CUST_CITY"), rs.getString("CUST_PROV"), rs.getString("CUST_ZIP"),
+                                rs.getString("CUST_FIXPHONE"), rs.getString("CUST_MOBPHONE")), 
+                        new CustomerOfficeAddressDto(rs.getString("OFF_ADDR"), rs.getString("OFF_RT"),
+                                rs.getString("OFF_RW"), rs.getString("OFF_KEL"), rs.getString("OFF_KEC"),
+                                rs.getString("OFF_CITY"), rs.getString("OFF_PROV"), rs.getString("OFF_ZIP"),
+                                rs.getString("OFF_FIXPHONE"), rs.getString("OFF_MOBPHONE")));
+                return cust;
+            }
+        }, cust_no);
+    }
+}

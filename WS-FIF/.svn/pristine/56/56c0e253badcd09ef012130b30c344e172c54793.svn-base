@@ -1,0 +1,41 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.dto.order;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class OrderFullDocuments {
+
+    private String documentCode;
+    private String required;
+
+    public OrderFullDocuments() {
+    }
+
+    public OrderFullDocuments(String documentCode, String required) {
+        this.documentCode = documentCode;
+        this.required = required;
+    }
+
+    public String getDocumentCode() {
+        return documentCode;
+    }
+
+    public void setDocumentCode(String documentCode) {
+        this.documentCode = documentCode;
+    }
+
+    public String getRequired() {
+        return required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
+    }
+
+}

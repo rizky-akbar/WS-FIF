@@ -1,0 +1,101 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.service.impl;
+
+import com.fif.ws.dao.BucketOrderDao;
+import com.fif.ws.dao.InvoiceDao;
+import com.fif.ws.dao.OrderFullDao;
+import com.fif.ws.dao.HitungPremiDao;
+import com.fif.ws.dao.UpdateCustomerPhoneDao;
+import com.fif.ws.model.dto.order.InvoiceHeaderDto;
+import com.fif.ws.model.master.BucketOrderFif;
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.model.dto.order.OrderFullHeaderDto;
+import com.fif.ws.model.master.UpdatePhoneModel;
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import com.fif.ws.model.master.dto.ResponseMessageMap;
+import com.fif.ws.service.TransactionService;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Service
+@Transactional(readOnly = true)
+public class TransactionServiceImpl implements TransactionService {
+
+    @Autowired
+    private BucketOrderDao bucketOrderDao;
+
+    @Autowired
+    private OrderFullDao orderFullDao;
+
+    @Autowired
+    private HitungPremiDao hitungPremiDao;
+
+    @Autowired
+    private InvoiceDao invoiceDao;
+
+    @Autowired
+    private UpdateCustomerPhoneDao updateCustomerPhoneDao;
+
+    @Transactional(readOnly = false)
+    public ResponseMessage insertBucketOrder(BucketOrderDto orderDto) {
+        return bucketOrderDao.insertBucketOrder(orderDto);
+    }
+
+    public List<Map> getTrackingOrder(String transactionId, String sourceInput) {
+        return bucketOrderDao.getTrackingOrder(transactionId, sourceInput);
+    }
+
+    @Transactional(readOnly = false)
+    public void updatePaymentStatus(String transactionId, String virtualAccount, String status, Double paymentAmount, Date paymentDate, String sourceInput) {
+        bucketOrderDao.updatePaymentStatus(transactionId, virtualAccount, status, paymentAmount, paymentDate, sourceInput);
+    }
+
+    public ResponseMessageMap insertFullOrder(OrderFullHeaderDto o) {
+        return orderFullDao.insertFullOrder(o);
+    }
+
+    public ResponseMessageMap approvePO(String applNo) {
+        return orderFullDao.approvePO(applNo);
+    }
+
+    public ResponseMessage orderInvoice(InvoiceHeaderDto i) {
+        return invoiceDao.orderInvoice(i);
+    }
+
+    public ResponseMessage invoiceDetailOrder(InvoiceHeaderDto i) {
+        return invoiceDao.invoiceDetailOrder(i);
+    }
+
+    public ResponseMessage premiRate(String productNo, String branchId, int top, double totalAmount) {
+        return hitungPremiDao.premiRate(productNo, branchId, top, totalAmount);
+    }
+
+    @Transactional(readOnly = false)
+    public void updateCustomerPhone(String custNo, String mobilePhone) {
+        updateCustomerPhoneDao.updateCustomerPhone(custNo, mobilePhone);
+    }
+
+    public String getDealerIdByZip(String zip) {
+        return bucketOrderDao.getDealerIdByZip(zip);
+    }
+
+    public String getServOffIdByZip(String zip) {
+        return bucketOrderDao.getServOffIdByZip(zip);
+    }
+
+    public ResponseMessageMap scoreMeter(String applNo) {
+        return orderFullDao.scoreMeter(applNo);
+    }
+}

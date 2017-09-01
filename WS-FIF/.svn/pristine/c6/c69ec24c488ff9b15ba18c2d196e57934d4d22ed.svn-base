@@ -1,0 +1,383 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.dto.order.ObjectPembiayaanSchemeObject;
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.model.dto.order.OrderFullDocuments;
+import com.fif.ws.model.dto.order.OrderFullHeaderDto;
+import com.fif.ws.model.dto.order.OrderFullObjectPembiayaan;
+import com.fif.ws.model.master.dto.ResponseMessageMap;
+import com.fif.ws.util.CommonUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import oracle.jdbc.OracleTypes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class OrderFullDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public String genApplicationNo(String branchId) {
+        String applicationNo = null;
+        try {
+            String sql = "{ ? = call ORDMGMT.OM_F_GEN_APPLNO(?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.registerOutParameter(1, OracleTypes.VARCHAR);
+            cst.setString(2, branchId);
+            cst.registerOutParameter(3, OracleTypes.VARCHAR);
+            cst.execute();
+            applicationNo = (String) cst.getObject(1);
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return applicationNo;
+    }
+
+    public ResponseMessageMap insertFullOrder(OrderFullHeaderDto o) {
+        ResponseMessageMap resp = new ResponseMessageMap();
+        List<Map> lRespRef = new ArrayList<Map>();
+
+        try {
+            o.setApplNo(genApplicationNo(o.getOfficeCode()));
+            if (o.getApplNo().equals("")) {
+                resp = new ResponseMessageMap("12", "Error Generate Appl No", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("12", "Error Generate Appl No, " + e.getMessage(), null);
+        }
+
+        String _sql = "SELECT 'I' CUST_TYPE, KTP_CUST_NAME FROM FIFAPPS.FS_MST_CUST_IND WHERE CUST_NO = ?";
+        List<Map> lMapCust = new ArrayList<Map>();
+        try {
+            lMapCust = jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+                public Map mapRow(ResultSet rs, int i) throws SQLException {
+                    Map m = new HashMap();
+                    m.put("cust_type", rs.getString("cust_type"));
+                    m.put("ktp_cust_name", rs.getString("ktp_cust_name"));
+                    return m;
+                }
+            }, new Object[]{o.getCustomerNo()});
+            if (lMapCust.isEmpty()) {
+                return new ResponseMessageMap("13", "Customer No tidak ditemukan", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("13", "Customer No tidak ditemukan, " + e.getMessage(), null);
+        }
+
+        //Insert Appl Header
+        _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_HDR (ORDER_STAT, survey_stat, completeness,POOLING_FLAG,COY_ID, BRANCH_ID, APPL_NO,"
+                + "SERV_OFFICE_CODE, APPL_DATE, CUST_TYPE, CUST_NO, KTP_CUST_NAME, PLATFORM, BUSS_UNIT, PROG_CODE, "
+                + "SUPP_CODE, SO_CODE, TOT_PROD_PRICE, TOTAL_DP, TOTAL_OBJ, BRANCH_AR, CREATE_BY, CREATE_DATE) "
+                + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            jdbcTemplate.update(_sql,
+                    new Object[]{"R", "S", "C", "Y", "02", o.getOfficeCode(), o.getApplNo(), o.getServiceOfficeCode(),
+                        new Date(),lMapCust.get(0).get("cust_type"), o.getCustomerNo(), lMapCust.get(0).get("ktp_cust_name"),
+                        o.getPlatform(), o.getBusinessUnit(), o.getProgramCode(), o.getSupplierCode(), o.getSourceOrderCode(),
+                        CommonUtil.parseStringToDouble(o.getTotalProductPrice()), CommonUtil.parseStringToDouble(o.getTotalDp()),
+                        CommonUtil.parseStringToDouble(o.getTotalObject()), o.getBranchAR(), "SYSTEM", new Date()});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("21", "Error Save Appl Header, " + e.getMessage(), null);
+        }
+        
+        //Insert OM_TRN_APPL_ADDR
+        _sql = "insert into ORDMGMT.OM_TRN_APPL_ADDR (APPL_NO,IDENTITY_NO,IDENT_TYPE,"
+                + "ID_CUST_ADDR,ID_CUST_CITY,ID_CUST_CITY_CODE,ID_CUST_KEC,ID_CUST_KEC_CODE,"
+                + "ID_CUST_KEL,ID_CUST_KEL_CODE,ID_CUST_PROV,ID_CUST_PROV_CODE,ID_CUST_RT,"
+                + "ID_CUST_RW,ID_CUST_SUB_ZIP,ID_CUST_ZIP,CREATE_BY,CREATE_DATE) "
+                + " select ?,IDENTITY_NO,IDENT_TYPE,ID_CUST_ADDR,ID_CUST_CITY,"
+                + "ID_CUST_CITY_CODE,ID_CUST_KEC,ID_CUST_KEC_CODE,ID_CUST_KEL,ID_CUST_KEL_CODE,"
+                + "ID_CUST_PROV,ID_CUST_PROV_CODE,ID_CUST_RT,ID_CUST_RW,ID_CUST_SUB_ZIP,"
+                + "ID_CUST_ZIP,'SYSTEM',SYSDATE from FS_MST_CUST where CUST_NO = ?";
+
+        try {
+            jdbcTemplate.update(_sql,
+                    new Object[]{o.getApplNo(), o.getCustomerNo()});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("21", "Error Save OM_TRN_APPL_ADDR, " + e.getMessage(), null);
+        }
+
+        //Insert Appl OM_TRN_APPL_OBJECT
+        try {
+            int seqObj = 0;
+            for (OrderFullObjectPembiayaan oO : o.getObjectPembiayaan()) {
+                seqObj++;
+                _sql = "SELECT OBJ_GRP FROM ORDMGMT.OM_MST_OBJ_CODE WHERE OBJ_CODE = ?";
+                List<Map> lMapObj = new ArrayList<Map>();
+                try {
+                    lMapObj = jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+                        public Map mapRow(ResultSet rs, int i) throws SQLException {
+                            Map m = new HashMap();
+                            m.put("obj_grp", rs.getString("obj_grp"));
+                            return m;
+                        }
+                    }, new Object[]{oO.getObjectCode()});
+                    if (lMapObj.isEmpty()) {
+                        return new ResponseMessageMap("14", "Object Group tidak ditemukan", null);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return new ResponseMessageMap("14", "Object Group tidak ditemukan, " + e.getMessage(), null);
+                }
+
+                _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_OBJECT (SUPP_CODE,trf_dealer,po_flag,APPL_NO, BRANCH_ID, SEQ_NO, OBJ_GRP, OBJ_CODE, NEW_USED,"
+                        + " OBJ_BRAND, OBJ_MODEL, OBJ_TYPE, OBJ_SIZE, OBJ_TAHUN, OBJ_PRICE,"
+                        + " QTY, CUST_DP, MONTH_INST, INS_PRODUCT, RATE_NO, SERIAL_NO,"
+                        + " NOSIN, NOKA, NO_POLISI, WARNA, STNK_DATE, CREATE_BY, CREATE_DATE) "
+                        + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                jdbcTemplate.update(_sql,
+                        new Object[]{o.getSupplierCode(), CommonUtil.parseStringToDouble(oO.getObjectPrice()) - CommonUtil.parseStringToDouble(oO.getCustomerDp()), "N", o.getApplNo(), o.getOfficeCode(), seqObj, lMapObj.get(0).get("obj_grp"),
+                            oO.getObjectCode(), oO.getNewUsed(), oO.getObjectBrand(), oO.getObjectModel(),
+                            oO.getObjectType(), oO.getObjectSize(), CommonUtil.parseStringToDouble(oO.getObjectYear()),
+                            CommonUtil.parseStringToDouble(oO.getObjectPrice()),
+                            CommonUtil.parseStringToDouble(oO.getQuantity()), CommonUtil.parseStringToDouble(oO.getCustomerDp()),
+                            CommonUtil.parseStringToDouble(oO.getMonthInstallment()), oO.getInsuranceProduct(),
+                            oO.getInsuranceRateNo(), oO.getSerialNo(), oO.getNomerMesin(), oO.getNomerRangka(),
+                            oO.getNomerPolisi(), oO.getWarna(), CommonUtil.parseStringToDate(oO.getStnkDate()),
+                            "SYSTEM", new Date()});
+                Map m = new HashMap();
+                m.put("applNo", o.getApplNo());
+                m.put("objSeqNo", seqObj);
+                m.put("objCode", oO.getObjectCode());
+                m.put("poNo", "92900020700012");
+
+                lRespRef.add(m);
+                
+//                //insert OM_TRN_APPL_SC1 
+        _sql = "insert into ORDMGMT.OM_TRN_APPL_SC1 (APPL_NO, OBJ_CODE, TOP, CUST_OFFPH_AREA, "
+                + "CUST_OFFPHONE, SIP_GRADE, DOUBLE_POOLING, FLAG_VISIT, PROMISE_TO_VISIT, CREATE_BY, CREATE_DATE)"
+                + "SELECT ? , ?, ?, OFF_FIXPH_AREA , OFF_FIXPHONE , 'PLATINUM', 'N', 'N', SYSDATE, 'SYSTEM', SYSDATE "
+                + "FROM FIFAPPS.FS_MST_CUST_IND  where CUST_NO= ?";
+        jdbcTemplate.update(_sql, new Object[]{o.getApplNo(),oO.getObjectCode(),o.getStrukturKredit().getTop(),o.getCustomerNo()});
+                               
+                //Insert
+                for(ObjectPembiayaanSchemeObject objectPembiayaan : oO.getSchemeObject()){
+                      if (!objectPembiayaan.getMsCode().isEmpty()) {
+                    _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_MS_LVL_OBJECT (MS_CODE, MS_AMT, APPL_NO, SEQ_NO, MS_SEQ_NO, BRANCH_ID, CREATE_BY, CREATE_DATE) "
+                            + " VALUES(?,?,?,?,?,?,?,?)";
+                    jdbcTemplate.update(_sql,
+                            new Object[]{objectPembiayaan.getMsCode(), CommonUtil.parseStringToDouble(objectPembiayaan.getAmount()),
+                                o.getApplNo(), seqObj, 1, o.getOfficeCode(),
+                                "SYSTEM", new Date()});
+                }
+                }
+              
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("22", "Error Save Appl Object, " + e.getMessage(), null);
+        }
+
+        //insert OM_TRN_APPL_MS_LVL_KONTRAK
+        _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_MS_LVL_KONTRAK(APPL_NO, BRANCH_ID, DEFF_AMOUNT, MS_CODE, CREATE_BY, CREATE_DATE) "
+                + " values (?,?,?,?,?,?)";
+        try {
+            if (!o.getMarketingSchemeContract().getMsCode().isEmpty()) {
+                jdbcTemplate.update(_sql,
+                        new Object[]{o.getApplNo(), o.getOfficeCode(), CommonUtil.parseStringToDouble(o.getMarketingSchemeContract().getAmount()),
+                            o.getMarketingSchemeContract().getMsCode(),
+                            "SYSTEM", new Date()});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("23", "Error Save marketingSchemeContract, " + e.getMessage(), null);
+        }
+
+        //insert OM_TRN_APPL_DOC
+        _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_DOC(BRANCH_ID, APPL_NO, DOC_CODE, REQUIRED, CREATE_BY, CREATE_DATE) "
+                + " VALUES(?,?,?,?,?,?)";
+        try {
+            for (OrderFullDocuments oD : o.getDocuments()) {
+                jdbcTemplate.update(_sql,
+                        new Object[]{o.getOfficeCode(), o.getApplNo(), oD.getDocumentCode(),
+                            oD.getRequired(),
+                            "SYSTEM", new Date()});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("24", "Error Save Documents, " + e.getMessage(), null);
+        }
+
+        //insert OM_TRN_APPL_STRUCRDT
+        _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_STRUCRDT(VERSION_NO, APPL_NO, INTEREST_TYPE, TENOR, "
+                + "PERIODE, PERIODE_TYPE, ADV_ARREAR,ADMIN, CHOICE_INST_RATE, ACTUAL_PCT_FLAT, TOP, "
+                + "PCT_RESIDU, AMT_RESIDU, CREATE_BY, CREATE_DATE) "
+                + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            jdbcTemplate.update(_sql,
+                    new Object[]{0, o.getApplNo(), o.getStrukturKredit().getInterestType(),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getTenor()), CommonUtil.parseStringToDouble(o.getStrukturKredit().getPeriode()),
+                        o.getStrukturKredit().getPeriodeType(), o.getStrukturKredit().getAdvArrear(),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getAdmin()),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getChoiceInstallmentRate()),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getPercentFlat()),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getTop()),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getPercentResidu()),
+                        CommonUtil.parseStringToDouble(o.getStrukturKredit().getAmountResidu()),
+                        "SYSTEM", new Date()});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("25", "Error Save OM_TRN_APPL_STRUCRDT, " + e.getMessage(), null);
+        }
+
+        if(!o.getPromotions().getPromoMasterCode().isEmpty()){
+             //insert OM_TRN_APPL_PROMO_LIST
+        _sql = "INSERT INTO ORDMGMT.OM_TRN_APPL_PROMO_LIST(BRANCH_ID, APPL_NO, PROMO_MST_CODE, PROMO_DTL_ID, CREATE_BY, CREATE_DATE) "
+                + " VALUES(?,?,?,?,?,?)";
+        try {
+            jdbcTemplate.update(_sql,
+                    new Object[]{o.getOfficeCode(), o.getApplNo(), o.getPromotions().getPromoMasterCode(),
+                        o.getPromotions().getPromoDetailCode(),
+                        "SYSTEM", new Date()});
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("26", "Error Save OM_TRN_APPL_PROMO_LIST, " + e.getMessage(), null);
+        }
+        }
+       
+
+        //Call Calculate.item_object
+        try {
+            String sql = "{ call ORDMGMT.CALCULATE.item_object(?,?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.registerOutParameter(2, OracleTypes.NUMBER);
+            cst.setString(1, o.getApplNo());
+            cst.registerOutParameter(3, OracleTypes.VARCHAR);
+            cst.execute();
+
+            System.out.println("item_object # " + cst.getInt(2) + " : " + cst.getString(3));
+            if (cst.getInt(2) > 0) {
+                return new ResponseMessageMap("27", "Error Calculate Item Object, " + cst.getString(3), null);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("27", "Error Calculate Item Object, " + e.getMessage(), null);
+        }
+
+        //Call Calculate.item_object
+        try {
+            String sql = "{ call ORDMGMT.CALCULATE.struc_crdt(?,?,?,?,?,?,?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.setString(1, o.getApplNo());
+            cst.registerOutParameter(2, OracleTypes.NUMBER);
+            cst.registerOutParameter(3, OracleTypes.VARCHAR);
+            cst.setDouble(4, 2);
+            cst.registerOutParameter(5, OracleTypes.VARCHAR);
+            cst.registerOutParameter(6, OracleTypes.NUMBER);
+            cst.registerOutParameter(7, OracleTypes.NUMBER);
+            cst.setString(8, "0");
+            cst.execute();
+            System.out.println("struc_crdt # " + cst.getInt(2) + " : " + cst.getString(3));
+
+            if (cst.getInt(2) > 0) {
+                return new ResponseMessageMap("28", "Error Calculate struc_crdt, " + cst.getString(3), null);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("28", "Error Calculate struc_crdt, " + e.getMessage(), null);
+        }
+
+        //Call PO.Approve Order
+//        try {
+//            String sql = "{ ? = call ORDMGMT.PKG_PO.approve_order(?,?)}";
+//            Connection con = jdbcTemplate.getDataSource().getConnection();
+//            CallableStatement cst = con.prepareCall(sql);
+//            cst.registerOutParameter(1, OracleTypes.VARCHAR);
+//            cst.setString(2, o.getApplNo());
+//            cst.setString(3, "10283");
+//            cst.execute();
+//            System.out.println("approve_order # " + cst.getString(1));
+//            
+//            con.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ResponseMessage("29", "Error Approval Order, " + e.getMessage(), "");
+//        }
+        return new ResponseMessageMap("00", "Success", lRespRef);
+    }
+
+    public ResponseMessageMap approvePO(String applNo) {
+        ResponseMessageMap resp = new ResponseMessageMap();
+        List<Map> lRespRef = new ArrayList<Map>();
+        
+        try {
+            String sql = "{ ? = call ORDMGMT.PKG_PO.approve_order(?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.registerOutParameter(1, OracleTypes.VARCHAR);
+            cst.setString(2, applNo);
+            cst.setString(3, "10283");
+            cst.execute();
+            System.out.println("approve_order # " + cst.getString(1));
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("29", "Error Approval Order, " + e.getMessage(), null);
+        }
+
+        //    String _sql = "select distinct (a.po_no), a.appl_no, c.SEQ_NO from om_trn_po_dtl a, om_trn_po_hdr b where  and a.po_no = b.po_no";
+        String _sql = " select distinct(a.po_no), a.appl_no, c.seq_no, c.obj_grp, c.obj_code from ordmgmt.om_trn_po_dtl a, ordmgmt.om_trn_po_hdr b, ordmgmt.om_trn_appl_object c where a.appl_no = ? and (a.po_no = b.po_no \n"
+                + "and a.po_no = c.po_no) ";
+        List<Map> lMapObj = new ArrayList<Map>();
+        try {
+            lMapObj = jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+                public Map mapRow(ResultSet rs, int i) throws SQLException {
+                    Map a = new HashMap();
+                    a.put("poNo", rs.getString("po_no"));
+                    a.put("applicationNo", rs.getString("appl_no"));
+                    a.put("noSeqObj", rs.getString("seq_no"));
+                    a.put("objectGroup", rs.getString("obj_grp"));
+                    a.put("objectCode", rs.getString("obj_code"));
+                    return a;
+                }
+            }, new Object[]{applNo});
+            if (lMapObj.isEmpty()) {
+                return new ResponseMessageMap("14", "Nomor PO tidak ditemukan", null);
+            } else {
+               // lMapObj.get(0).put("appl_no", applNo);
+                return new ResponseMessageMap("00", "Success", lMapObj);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseMessageMap("14", "Nomor PO tidak ditemukan, " + e.getMessage(), null);
+        }
+        //return new ResponseMessage("00", "Success", applNo);
+    }
+
+}

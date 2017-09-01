@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.fif.ws.model.master.ProvinsiModel"/>
+        <mapping class="com.fif.ws.model.master.ReligionModel"/>
+        <mapping class="com.fif.ws.model.master.EducationModel"/>
+        <mapping class="com.fif.ws.model.master.HouseStatusModel"/>
+        <mapping class="com.fif.ws.model.master.MaritalStatusModel"/>
+        <mapping class="com.fif.ws.model.master.CitiesModel"/>
+        <mapping class="com.fif.ws.model.master.KecamatanModel"/>
+        <mapping class="com.fif.ws.model.master.KelurahanModel"/>
+        <mapping class="com.fif.ws.model.master.ZipModel"/>
+        <mapping class="com.fif.ws.model.master.ZipCodesModel"/>
+        <mapping class="com.fif.ws.model.master.OccupationModel"/>
+        <mapping class="com.fif.ws.model.master.OccupationSubModel"/>
+        <mapping class="com.fif.ws.model.master.OccupationTypeModel"/>
+        <mapping class="com.fif.ws.model.master.ObjectGroupModel"/>
+        <mapping class="com.fif.ws.model.master.ObjectCodesModel"/>
+        <mapping class="com.fif.ws.model.master.OfficesModel"/>
+        <mapping class="com.fif.ws.model.master.RegionalModel"/>
+        <mapping class="com.fif.ws.model.master.CustomerModel"/>
+        <mapping class="com.fif.ws.model.master.DealerMaster"/>
+        <mapping class="com.fif.ws.model.master.DocumentModel"/>
+        <mapping class="com.fif.ws.model.master.DocumentOccutypeModel"/>
+        <mapping class="com.fif.ws.model.master.PromoModel"/>
+        <mapping class="com.fif.ws.model.master.PromoDetailModel"/>
+        <mapping class="com.fif.ws.model.master.BucketOrderFif"/>
+    </session-factory>
+</hibernate-configuration>

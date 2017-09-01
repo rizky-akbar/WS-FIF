@@ -1,0 +1,183 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.controller;
+
+import com.fif.ws.dao.OrderFullDao;
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import com.fif.ws.order.dto.ObjectPembiayaanSchemeObject;
+import com.fif.ws.order.dto.OrderFullDocuments;
+import com.fif.ws.order.dto.OrderFullHeaderDto;
+import com.fif.ws.order.dto.OrderFullMarketingSchemeContract;
+import com.fif.ws.order.dto.OrderFullObjectPembiayaan;
+import com.fif.ws.order.dto.OrderFullPromotions;
+import com.fif.ws.order.dto.OrderFullStrukturKredit;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Controller
+public class TestController {
+
+    @RequestMapping(value = "/test/preorder", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BucketOrderDto> getMasterProvinsi(HttpSession session) {
+        List<BucketOrderDto> jsonData = new ArrayList<BucketOrderDto>();
+        BucketOrderDto bo = new BucketOrderDto();
+        bo.setAddress("JL PELAN PELAN");
+        bo.setBirthPlace("SOLO");
+        bo.setBirthdate("20130101000000");
+        bo.setBranchId("40300");
+        bo.setCity("SOLO");
+        bo.setCityCode("01");
+        bo.setComments("TEST");
+        bo.setCustomerMobilePhone1("0813999999");
+        bo.setCustomerMobilePhone2("08131");
+        bo.setCustomerName("DHAMARSU");
+        bo.setCustomerOfficePhone("08132");
+        bo.setCustomerOfficePhoneArea("0271");
+        bo.setCustomerPhone("08133");
+        bo.setCustomerPhoneArea("0271");
+        bo.setDealerId("H257");
+        bo.setDealerIdFif("VS-000021168");
+        bo.setDpAmount("500000");
+        bo.setIndentStatus("");
+        bo.setKecamatan("BANJARSARI");
+        bo.setKecamatanCode("");
+        bo.setKelurahan("NUSUKAN");
+        bo.setKelurahanCode("");
+        bo.setObjectType("A16");
+        bo.setObjectTypeFif("Z9999");
+        bo.setOrderDate("20140101000000");
+        bo.setProvinsi("JAWA TENGAH");
+        bo.setProvinsiCode("");
+        bo.setRT("00");
+        bo.setRW("00");
+        bo.setRecordId("1002");
+        bo.setSalesId("ACJ");
+        bo.setSourceInput("E");
+        bo.setSpk("SPK5368");
+        bo.setSubZip(null);
+        bo.setZip("57135");
+
+        jsonData.add(bo);
+        bo.setRecordId("1000");
+        jsonData.add(bo);
+        bo.setRecordId("1001");
+        jsonData.add(bo);
+        return jsonData;
+    }
+
+    @Autowired
+    private OrderFullDao orderFullDao;
+
+    @RequestMapping(value = "/test/applNo", method = RequestMethod.GET)
+    @ResponseBody
+    public String generateApplNo(HttpSession session) {
+        return orderFullDao.genApplicationNo("10100");
+    }
+
+    @RequestMapping(value = "/test/order", method = RequestMethod.GET)
+    @ResponseBody
+    public List<OrderFullHeaderDto> orderFull(HttpSession session){
+        List<OrderFullHeaderDto> jsonData = new ArrayList<OrderFullHeaderDto>();
+        OrderFullHeaderDto dto = new OrderFullHeaderDto();
+        List<OrderFullObjectPembiayaan> ofop1 = new ArrayList<OrderFullObjectPembiayaan>();
+        OrderFullObjectPembiayaan ofop = new OrderFullObjectPembiayaan();
+        ObjectPembiayaanSchemeObject opso = new ObjectPembiayaanSchemeObject();
+        OrderFullMarketingSchemeContract ofmsc = new OrderFullMarketingSchemeContract();
+        List<OrderFullDocuments> ofd1 =  new ArrayList<OrderFullDocuments>();
+        OrderFullDocuments ofd = new OrderFullDocuments();
+        OrderFullPromotions ofp = new OrderFullPromotions();
+        OrderFullStrukturKredit ofsk = new OrderFullStrukturKredit();
+         
+        
+        dto.setOfficeCode("92900");
+        dto.setServiceOfficeCode("92900");
+        dto.setApplicationDate("20140202000000");
+        dto.setCustomerNo("929080000007");
+        dto.setPlatform("K");
+        dto.setBusinessUnit("NMC");
+        dto.setProgramCode("MP01");
+        dto.setSupplierCode("9290002");
+        dto.setSourceOrderCode("");
+        dto.setTotalProductPrice("18000000");
+        dto.setTotalDp("8000000");
+        dto.setTotalObject("");
+        dto.setBranchAR("92900");
+        dto.setObjectPembiayaan(ofop1);
+        dto.setMarketingSchemeContract(ofmsc);
+        dto.setDocuments(ofd1);
+        dto.setPromotions(ofp);
+        dto.setStrukturKredit(ofsk);
+        
+        
+        ofop.setObjectCode("EL2640");
+        ofop.setNewUsed("N");
+        ofop.setObjectBrand("SPECTRA");
+        ofop.setObjectModel("DIVICAM");
+        ofop.setObjectType("DUMMY");
+        ofop.setObjectSize("0");
+        ofop.setObjectYear("2007");
+        ofop.setObjectPrice("1650000");
+        ofop.setQuantity("1");
+        ofop.setMonthInstallment("151000");
+        ofop.setInsuranceProduct("");
+        ofop.setInsuranceRateNo("");
+        ofop.setSerialNo("");
+        ofop.setNomerMesin("230P074C00");
+        ofop.setNomerRangka("");
+        ofop.setNomerPolisi("");
+        ofop.setWarna("");
+        ofop.setStnkDate("");
+        ofop.setSchemeObject(opso);
+        
+        ofop1.add(ofop);
+        
+        
+        opso.setMsCode("MS01");
+        opso.setAmount("25000");
+        
+        ofmsc.setMsCode("MS86");
+        ofmsc.setAmount("70000");
+        
+        ofd.setDocumentCode("212");
+        ofd.setRequired("Y");
+        
+        ofd1.add(ofd);
+        
+        ofp.setPromoDetailCode("BEX0052");
+        ofp.setPromoMasterCode("EX");
+        
+        
+        ofsk.setInterestType("A");
+        ofsk.setTenor("9");
+        ofsk.setPeriode("1");
+        ofsk.setPeriodeType("M");
+        ofsk.setAdvArrear("AD");
+        ofsk.setAdmin("50000");
+        ofsk.setChoiceInstallmentRate("2");
+        ofsk.setPercentFlat("45");
+        ofsk.setPercentResidu("");
+        ofsk.setAmountResidu("");
+        
+        jsonData.add(dto);
+        
+        return jsonData;
+               
+        
+        
+    }
+    
+}

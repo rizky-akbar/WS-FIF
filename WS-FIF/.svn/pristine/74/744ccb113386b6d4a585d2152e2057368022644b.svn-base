@@ -1,0 +1,176 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class InsuranceDao {
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    public List<Map> getInsurances(){
+        String _sql = "select a.product_no, a.product_desc, a.adm_fee, a.start_date, a.end_date, a.created_date, a.modified_date," +
+                "b.branch_id, b.rate_no," +
+                "c.obj_grp, c.top, c.net_rate_pct, c.bruto_rate_pct, c.depreciation_pct, c.amount_ceiling" +
+                " from INSC.INSC_MST_PRODUCT a, INSC.INSC_MST_PRODUCT_BRANCH b, INSC.INSC_MST_RATE c, ORDMGMT.OM_MST_OBJ_CODE d" +
+                " where CUST_TYPE = 'R'" +
+                " AND a.product_no = b.product_no" +
+                " and b.rate_no = c.rate_no" +
+                " and c.obj_grp   = d.obj_grp" +
+                " and d.is_vehicle = 'N'" +
+                " and a.end_date >= sysdate"
+                + " order by a.product_no, b.branch_id, c.obj_grp asc";
+        
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("product_no", rs.getString("product_no"));
+                h.put("product_desc", rs.getString("product_desc"));
+                h.put("adm_fee", rs.getDouble("adm_fee"));
+                h.put("start_date", rs.getDate("start_date"));
+                h.put("end_date", rs.getDate("end_date"));
+                h.put("branch_id", rs.getString("branch_id"));
+                h.put("rate_no", rs.getString("rate_no"));
+                h.put("obj_grp", rs.getString("obj_grp"));
+                h.put("top", rs.getDouble("top"));
+                h.put("net_rate_pct", rs.getDouble("net_rate_pct"));
+                h.put("bruto_rate_pct", rs.getDouble("bruto_rate_pct"));
+                h.put("depreciation_pct", rs.getDouble("depreciation_pct"));
+                h.put("amount_ceiling", rs.getDouble("amount_ceiling"));
+                return h;
+            }
+        });
+    }
+    
+    public List<Map> getInsurancesBySinceDate(Date since_date){
+        String _sql = "select a.product_no, a.product_desc, a.adm_fee, a.start_date, a.end_date, a.created_date, a.modified_date," +
+                "b.branch_id, b.rate_no," +
+                "c.obj_grp, c.top, c.net_rate_pct, c.bruto_rate_pct, c.depreciation_pct, c.amount_ceiling" +
+                " from INSC.INSC_MST_PRODUCT a, INSC.INSC_MST_PRODUCT_BRANCH b, INSC.INSC_MST_RATE c, ORDMGMT.OM_MST_OBJ_CODE d" +
+                " where CUST_TYPE = 'R'" +
+                " AND a.product_no = b.product_no" +
+                " and b.rate_no = c.rate_no" +
+                " and c.obj_grp   = d.obj_grp" +
+                " and d.is_vehicle = 'N'" +
+                " and a.end_date >= sysdate" +
+                " and (a.created_date >= ? or a.modified_date >= ?)"
+                + " order by a.product_no, b.branch_id, c.obj_grp, c.top asc";
+        
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("product_no", rs.getString("product_no"));
+                h.put("product_desc", rs.getString("product_desc"));
+                h.put("adm_fee", rs.getDouble("adm_fee"));
+                h.put("start_date", rs.getDate("start_date"));
+                h.put("end_date", rs.getDate("end_date"));
+                h.put("branch_id", rs.getString("branch_id"));
+                h.put("rate_no", rs.getString("rate_no"));
+                h.put("obj_grp", rs.getString("obj_grp"));
+                h.put("top", rs.getDouble("top"));
+                h.put("net_rate_pct", rs.getDouble("net_rate_pct"));
+                h.put("bruto_rate_pct", rs.getDouble("bruto_rate_pct"));
+                h.put("depreciation_pct", rs.getDouble("depreciation_pct"));
+                h.put("amount_ceiling", rs.getDouble("amount_ceiling"));
+                return h;
+            }
+        }, new Object[]{since_date, since_date});
+    }
+    
+    public List<Map> getInsurancesProduct(){
+        String _sql = "select distinct a.product_no, a.product_desc, a.adm_fee, a.start_date, a.end_date, a.created_date, a.modified_date" +
+                " from INSC.INSC_MST_PRODUCT a, INSC.INSC_MST_PRODUCT_BRANCH b, INSC.INSC_MST_RATE c, ORDMGMT.OM_MST_OBJ_CODE d" +
+                " where CUST_TYPE = 'R'" +
+                " AND a.product_no = b.product_no" +
+                " and b.rate_no = c.rate_no" +
+                " and c.obj_grp   = d.obj_grp" +
+                " and d.is_vehicle = 'N'" +
+                " and a.end_date >= sysdate" +
+                " order by a.product_no asc";
+        
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("product_no", rs.getString("product_no"));
+                h.put("product_desc", rs.getString("product_desc"));
+                h.put("adm_fee", rs.getDouble("adm_fee"));
+                h.put("start_date", rs.getDate("start_date"));
+                h.put("end_date", rs.getDate("end_date"));
+                return h;
+            }
+        });
+    }
+    
+    public List<Map> getInsurancesBranchByProduct(String product_no){
+        String _sql = "select distinct b.branch_id, b.rate_no" +
+                " from INSC.INSC_MST_PRODUCT a, INSC.INSC_MST_PRODUCT_BRANCH b, INSC.INSC_MST_RATE c, ORDMGMT.OM_MST_OBJ_CODE d" +
+                " where a.CUST_TYPE = 'R'" +
+                " AND a.product_no = b.product_no" +
+                " AND a.product_no = ?" +
+                " and b.rate_no = c.rate_no" +
+                " and c.obj_grp   = d.obj_grp" +
+                " and d.is_vehicle = 'N'" +
+                " and a.end_date >= sysdate" +
+                " order by b.branch_id asc";
+        
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("branch_id", rs.getString("branch_id"));
+                h.put("rate_no", rs.getString("rate_no"));
+                return h;
+            }
+        }, new Object[]{product_no});
+    }
+    
+    public List<Map> getInsurancesObjGroupByRate(String rate_no){
+        String _sql = "select distinct c.obj_grp, c.top, c.net_rate_pct, c.bruto_rate_pct, c.depreciation_pct, c.amount_ceiling" +
+                " from INSC.INSC_MST_PRODUCT a, INSC.INSC_MST_PRODUCT_BRANCH b, INSC.INSC_MST_RATE c, ORDMGMT.OM_MST_OBJ_CODE d" +
+                " where CUST_TYPE = 'R'" +
+                " AND a.product_no = b.product_no" +
+                " and c.rate_no = ?" +
+                " and b.rate_no = c.rate_no" +
+                " and c.obj_grp   = d.obj_grp" +
+                " and d.is_vehicle = 'N'" +
+                " and a.end_date >= sysdate" +
+                " order by c.obj_grp, c.top asc";
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("obj_grp", rs.getString("obj_grp"));
+                h.put("top", rs.getDouble("top"));
+                h.put("net_rate_pct", rs.getDouble("net_rate_pct"));
+                h.put("bruto_rate_pct", rs.getDouble("bruto_rate_pct"));
+                h.put("depreciation_pct", rs.getDouble("depreciation_pct"));
+                h.put("amount_ceiling", rs.getDouble("amount_ceiling"));
+                return h;
+            }
+        }, new Object[]{rate_no});
+    }
+    
+    
+}

@@ -1,0 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.ObjectCodesModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class ObjectCodesDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public List<ObjectCodesModel> getObjectCodesByObjGrp(String obj_grp) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel where OBJ_GRP=?")
+                .setParameter(0, obj_grp)
+                .list();
+    }
+    
+
+    public List<ObjectCodesModel> getObjectCodesMpf() {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel where IS_VEHICLE='N'")
+                .list();
+    }
+    
+     public List<ObjectCodesModel> getObjectCodesMpfByDate(Date since_date) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from ObjectCodesModel o where o.IS_VEHICLE='N' and (o.CREATE_DATE>=? or o.UPDATE_DATE>=?)")
+                .list();
+    }
+     
+     public String getInsurance(String objectCode){
+         String _sql = "select OBJ_CODE from INSC.INSC_MST_PRODUCT_OBJ where OBJ_CODE = ?";
+         List<String> list = jdbcTemplate.query(_sql, new RowMapper<String>() {
+
+             public String mapRow(ResultSet rs, int i) throws SQLException {
+                 return rs.getString("OBJ_CODE");
+             }
+         },new Object[]{objectCode});
+         if(list == null || list.equals("") || list.isEmpty()){
+             return "N";
+         }else{
+             return "Y";
+         }
+     }
+}

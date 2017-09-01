@@ -1,0 +1,87 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.PromoModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Repository
+public class PromoDao {
+    
+    @Autowired
+    private SessionFactory sessionFactory;
+    
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    
+    public List<PromoModel> getPromoBySinceDate(Date sinceDate){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d"
+                        + " where (m.CREATE_DATE >= :since_date or m.UPDATE_DATE >= :since_date) and d.PROMO_DTL_INVALID_DATE >= :tgl "
+                        + " order by m.PROMO_MST_CODE asc")
+                .setParameter("since_date", sinceDate)
+                .setParameter("tgl", new Date())
+                .list();
+    }
+
+     public List<PromoModel> getPromoByAll(){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d where d.PROMO_DTL_INVALID_DATE >= :tgl order by m.PROMO_MST_CODE asc")
+                .setParameter("tgl", new Date())
+                .list();
+    }
+     
+     public List<PromoModel> getPromoMpfByAll(){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d where "
+                        + " m.BUSS_UNIT = :bussUnit and d.PROMO_DTL_INVALID_DATE >= :tgl order by m.PROMO_MST_CODE asc")
+                .setParameter("tgl", new Date())
+                .setParameter("bussUnit", "MPF")
+                .list();
+    }
+     
+     public List<PromoModel> getPromoMpfBySinceDate(Date sinceDate){
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d"
+                        + " where (m.CREATE_DATE >= :since_date or m.UPDATE_DATE >= :since_date) "
+                        + " and d.PROMO_DTL_INVALID_DATE >= :tgl and m.BUSS_UNIT = :bussUnit"
+                        + " order by m.PROMO_MST_CODE asc")
+                .setParameter("since_date", sinceDate)
+                .setParameter("tgl", new Date())
+                .setParameter("bussUnit", "MPF")
+                .list();
+    }
+     
+     public String getRatePromoByPromoId(String promoDetailId){
+         String _sql = "select rate_promo from OM_MST_SETUP_RATE where promo_id = ?";
+         List<Double> _lRate_no = jdbcTemplate.query(_sql, new RowMapper<Double>() {
+
+             public Double mapRow(ResultSet rs, int i) throws SQLException {
+                 return rs.getDouble("rate_promo");
+             }
+         }, new Object[]{promoDetailId});
+         
+         if(_lRate_no.size() > 0){
+             return String.valueOf(_lRate_no.get(0));
+         }else{
+             return "";
+         }
+     }
+    
+}

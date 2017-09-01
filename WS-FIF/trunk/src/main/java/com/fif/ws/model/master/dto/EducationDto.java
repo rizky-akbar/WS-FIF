@@ -1,0 +1,60 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.master.dto;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class EducationDto {
+
+    private String educationType;
+    private String description;
+    private String biStatus;
+    private String aabCode;
+
+    public EducationDto() {
+    }
+
+    public String getEducationType() {
+        return educationType;
+    }
+
+    public void setEducationType(String educationType) {
+        this.educationType = educationType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getBiStatus() {
+        return biStatus;
+    }
+
+    public void setBiStatus(String biStatus) {
+        this.biStatus = biStatus;
+    }
+
+    public String getAabCode() {
+        return aabCode;
+    }
+
+    public void setAabCode(String aabCode) {
+        this.aabCode = aabCode;
+    }
+
+    public EducationDto(String educationType, String description, String biStatus, String aabCode) {
+        this.educationType = educationType;
+        this.description = description;
+        this.biStatus = biStatus;
+        this.aabCode = aabCode;
+    }
+}

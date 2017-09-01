@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "FS_MST_MARITAL_STATUS")
+public class MaritalStatusModel {
+    
+    @Id
+    private String MARITAL_STAT;
+    private String MARITAL_DESC;
+
+    /**
+     * @return the MARITAL_STAT
+     */
+    public String getMARITAL_STAT() {
+        return MARITAL_STAT;
+    }
+
+    /**
+     * @param MARITAL_STAT the MARITAL_STAT to set
+     */
+    public void setMARITAL_STAT(String MARITAL_STAT) {
+        this.MARITAL_STAT = MARITAL_STAT;
+    }
+
+    /**
+     * @return the MARITAL_DESC
+     */
+    public String getMARITAL_DESC() {
+        return MARITAL_DESC;
+    }
+
+    /**
+     * @param MARITAL_DESC the MARITAL_DESC to set
+     */
+    public void setMARITAL_DESC(String MARITAL_DESC) {
+        this.MARITAL_DESC = MARITAL_DESC;
+    }
+}

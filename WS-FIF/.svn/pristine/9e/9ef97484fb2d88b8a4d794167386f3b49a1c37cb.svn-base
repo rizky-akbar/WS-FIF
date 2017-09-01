@@ -1,0 +1,259 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.PromoModel;
+import com.fif.ws.model.master.dto.PromoDetailDto;
+import com.fif.ws.model.master.dto.PromoDto;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class PromoDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public List<PromoModel> getPromoBySinceDate(Date sinceDate) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d"
+                        + " where (m.CREATE_DATE >= :since_date or m.UPDATE_DATE >= :since_date) and d.PROMO_DTL_INVALID_DATE >= :tgl "
+                        + " order by m.PROMO_MST_CODE asc")
+                .setParameter("since_date", sinceDate)
+                .setParameter("tgl", new Date())
+                .list();
+    }
+
+    public List<PromoModel> getPromoByAll() {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d where d.PROMO_DTL_INVALID_DATE >= :tgl order by m.PROMO_MST_CODE asc")
+                .setParameter("tgl", new Date())
+                .list();
+    }
+
+    public List<PromoModel> getPromoMpfByAll() {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d where "
+                        + " m.BUSS_UNIT = :bussUnit and d.PROMO_DTL_INVALID_DATE >= :tgl order by m.PROMO_MST_CODE asc")
+                .setParameter("tgl", new Date())
+                .setParameter("bussUnit", "MPF")
+                .list();
+    }
+
+    public List<PromoModel> getPromoMpfBySinceDate(Date sinceDate) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from PromoModel m left join fetch m.promoDetails d"
+                        + " where (m.CREATE_DATE >= :since_date or m.UPDATE_DATE >= :since_date) "
+                        + " and d.PROMO_DTL_INVALID_DATE >= :tgl and m.BUSS_UNIT = :bussUnit"
+                        + " order by m.PROMO_MST_CODE asc")
+                .setParameter("since_date", sinceDate)
+                .setParameter("tgl", new Date())
+                .setParameter("bussUnit", "MPF")
+                .list();
+    }
+
+    public List<Map> getPromoMpfByBranchSinceDate(String coyId, String branchId, Date SinceDate) {
+        PromoDto pdto = new PromoDto();
+        List<PromoDto> dtos = new ArrayList<PromoDto>();
+        PromoDetailDto detailDto = new PromoDetailDto();
+        List<PromoDetailDto> detailDtos = new ArrayList<PromoDetailDto>();
+
+        String _sql = "select d.*, R.DEALER_ID, R.OBJT_CODE, R.OBJT_GRP,r.RATE_PROMO"
+                + "from ordmgmt.om_mst_setup_rate r,"
+                + "    (SELECT   d.promo_mst_code, m.promo_mst_desc, m.buss_unit, d.promo_dtl_id,"
+                + "             d.promo_dtl_desc, d.coy_id, d.promo_dtl_branch,"
+                + "             d.promo_dtl_valid_date startdate , d.promo_dtl_invalid_date endDate"
+                + "        FROM ordmgmt.om_mst_promo_dtl d, ordmgmt.om_mst_promo_mst m"
+                + "       WHERE d.promo_mst_code = m.promo_mst_code"
+                + "         AND SYSDATE BETWEEN d.promo_dtl_valid_date AND d.promo_dtl_invalid_date"
+                + "         AND (   promo_dtl_branch = ?"
+                + "              OR promo_dtl_branch = '00001'"
+                + "              OR promo_dtl_region = (SELECT regional_id"
+                + "                                       FROM fs_mst_offices"
+                + "                                      WHERE office_code = ?) "
+                + "              OR promo_dtl_branch = 'ALL'"
+                + "         ))d"
+                + "where d.promo_dtl_id = r.PROMO_ID"
+                + "    and nvl(r.COY_ID,d.COY_ID) = d.COY_ID"
+                + "    and nvl(r.buss_unit,'MPF') = 'MPF'"
+                + "    and r.promo_id is not null"
+                + "    and (d.create_date >= ? or d.modified_date >= ?)"
+                + "    and nvl(r.BRANCH_ID,?) = ?"
+                + "    and d.coy_id = ?";
+       
+
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+             public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("promoCode", rs.getString("promo_mst_code"));
+                h.put("promoDescription", rs.getString("promo_mst_desc"));
+                h.put("businessUnit", rs.getDouble("buss_unit"));
+                h.put("detailId", rs.getDate("promo_dtl_id"));
+                h.put("detailDescription", rs.getDate("promo_dtl_desc"));
+                h.put("branch", rs.getString("promo_dtl_branch"));
+                h.put("dealerId", rs.getString("DEALER_ID"));
+                h.put("objectCode", rs.getString("OBJT_CODE"));
+                h.put("objectGroup", rs.getDouble("OBJT_GRP"));
+                h.put("ratePromo", rs.getDouble("RATE_PROMO"));
+                h.put("startDate", rs.getDouble("startdate"));
+                h.put("endDate", rs.getDouble("endDate"));
+                return h;
+            }
+        }, new Object[]{branchId,branchId,SinceDate,SinceDate,branchId,branchId,coyId});
+    
+    }
+    
+    public List<Map> getPromoMpfByBranch(String coyId, String branchId) {
+        PromoDto pdto = new PromoDto();
+        List<PromoDto> dtos = new ArrayList<PromoDto>();
+        PromoDetailDto detailDto = new PromoDetailDto();
+        List<PromoDetailDto> detailDtos = new ArrayList<PromoDetailDto>();
+
+        String _sql = "select d.*, R.DEALER_ID, R.OBJT_CODE, R.OBJT_GRP,r.RATE_PROMO"
+                + "from ordmgmt.om_mst_setup_rate r,"
+                + "    (SELECT   d.promo_mst_code, m.promo_mst_desc, m.buss_unit, d.promo_dtl_id,"
+                + "             d.promo_dtl_desc, d.coy_id, d.promo_dtl_branch,"
+                + "             d.promo_dtl_valid_date startdate , d.promo_dtl_invalid_date endDate"
+                + "        FROM ordmgmt.om_mst_promo_dtl d, ordmgmt.om_mst_promo_mst m"
+                + "       WHERE d.promo_mst_code = m.promo_mst_code"
+                + "         AND SYSDATE BETWEEN d.promo_dtl_valid_date AND d.promo_dtl_invalid_date"
+                + "         AND (   promo_dtl_branch = ?"
+                + "              OR promo_dtl_branch = '00001'"
+                + "              OR promo_dtl_region = (SELECT regional_id"
+                + "                                       FROM fs_mst_offices"
+                + "                                      WHERE office_code = ?) "
+                + "              OR promo_dtl_branch = 'ALL'"
+                + "         ))d"
+                + "where d.promo_dtl_id = r.PROMO_ID"
+                + "    and nvl(r.COY_ID,d.COY_ID) = d.COY_ID"
+                + "    and nvl(r.buss_unit,'MPF') = 'MPF'"
+                + "    and r.promo_id is not null"
+                + "    and nvl(r.BRANCH_ID,?) = ?"
+                + "    and d.coy_id = ?";
+       
+
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+             public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("promoCode", rs.getString("promo_mst_code"));
+                h.put("promoDescription", rs.getString("promo_mst_desc"));
+                h.put("businessUnit", rs.getDouble("buss_unit"));
+                h.put("detailId", rs.getDate("promo_dtl_id"));
+                h.put("detailDescription", rs.getDate("promo_dtl_desc"));
+                h.put("branch", rs.getString("promo_dtl_branch"));
+                h.put("dealerId", rs.getString("DEALER_ID"));
+                h.put("objectCode", rs.getString("OBJT_CODE"));
+                h.put("objectGroup", rs.getDouble("OBJT_GRP"));
+                h.put("ratePromo", rs.getDouble("RATE_PROMO"));
+                h.put("startDate", rs.getDouble("startdate"));
+                h.put("endDate", rs.getDouble("endDate"));
+                return h;
+            }
+        }, new Object[]{branchId,branchId,branchId,branchId,coyId});
+    
+    }
+
+    public String getRatePromoByPromoId(String promoDetailId) {
+        String _sql = "select rate_promo from OM_MST_SETUP_RATE where promo_id = ?";
+        List<Double> _lRate_no = jdbcTemplate.query(_sql, new RowMapper<Double>() {
+
+            public Double mapRow(ResultSet rs, int i) throws SQLException {
+                return rs.getDouble("rate_promo");
+            }
+        }, new Object[]{promoDetailId});
+
+        if (_lRate_no.size() > 0) {
+            return String.valueOf(_lRate_no.get(0));
+        } else {
+            return "";
+        }
+    }
+
+    public String getDealerIdByPromoId(String promoDetailId) {
+        String _sql = "select dealer_id from OM_MST_SETUP_RATE where promo_id = ?";
+        List<String> _lRate_no = jdbcTemplate.query(_sql, new RowMapper<String>() {
+
+            public String mapRow(ResultSet rs, int i) throws SQLException {
+                return rs.getString("dealer_id");
+            }
+        }, new Object[]{promoDetailId});
+
+        if (_lRate_no == null || _lRate_no.equals("") || _lRate_no.isEmpty()) {
+            return "";
+        } else {
+            return String.valueOf(_lRate_no.get(0));
+        }
+    }
+
+    public String getObjectCodeIdByPromoId(String promoDetailId) {
+        String _sql = "select objt_code from OM_MST_SETUP_RATE where promo_id = ?";
+        List<String> _lRate_no = jdbcTemplate.query(_sql, new RowMapper<String>() {
+
+            public String mapRow(ResultSet rs, int i) throws SQLException {
+                return rs.getString("objt_code");
+            }
+        }, new Object[]{promoDetailId});
+
+        if (_lRate_no == null || _lRate_no.equals("") || _lRate_no.isEmpty()) {
+            return "";
+        } else {
+            return String.valueOf(_lRate_no.get(0));
+        }
+    }
+
+    public String getObjectGrpIdByPromoId(String promoDetailId) {
+        String _sql = "select objt_grp from OM_MST_SETUP_RATE where promo_id = ?";
+        List<String> _lRate_no = jdbcTemplate.query(_sql, new RowMapper<String>() {
+
+            public String mapRow(ResultSet rs, int i) throws SQLException {
+                return rs.getString("objt_grp");
+            }
+        }, new Object[]{promoDetailId});
+
+        if (_lRate_no == null || _lRate_no.equals("") || _lRate_no.isEmpty()) {
+            return "";
+        } else {
+            return String.valueOf(_lRate_no.get(0));
+        }
+    }
+
+    public List<Map> getSetupRateByPromoId(String promoDetailId) {
+
+        String _sql = "select rate_promo,dealer_id,"
+                + "objt_code,objt_grp from OM_MST_SETUP_RATE where promo_id = ?";
+
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("ratePromo", rs.getDouble("rate_promo"));
+                h.put("dealerId", rs.getString("dealer_id"));
+                h.put("objectCode", rs.getString("objt_code"));
+                h.put("objectGroup", rs.getString("objt_grp"));
+                return h;
+            }
+        }, new Object[]{promoDetailId});
+    }
+}

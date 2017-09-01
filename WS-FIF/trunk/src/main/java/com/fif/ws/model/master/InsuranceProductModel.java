@@ -1,0 +1,43 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Entity
+@Table(name = "INSC_MST_PRODUCT", schema = "INSC")
+public class InsuranceProductModel {
+    @Id
+    private String PRODUCT_NO;
+    private String PRODUCT_DESC;
+    private Double ADM_FEE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date START_DATE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date END_DATE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date CREATED_DATE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date MODIFIED_DATE;
+    
+    @OneToMany(mappedBy="PRODUCT_NO", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<InsuranceBranchModel> inscBranchs =  new ArrayList<InsuranceBranchModel>();
+    
+}

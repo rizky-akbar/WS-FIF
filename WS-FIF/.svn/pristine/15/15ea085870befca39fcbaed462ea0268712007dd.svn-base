@@ -1,0 +1,42 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import oracle.jdbc.OracleTypes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+@Repository
+public class OrderFullDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public String genApplicationNo(String branchId) {
+        String applicationNo = null;
+        try {
+            String sql = "{ ? = call ORDMGMT.OM_F_GEN_APPLNO(?,?)}";
+            Connection con = jdbcTemplate.getDataSource().getConnection();
+            CallableStatement cst = con.prepareCall(sql);
+            cst.registerOutParameter(1, OracleTypes.VARCHAR);
+            cst.setString(2, branchId);
+            cst.registerOutParameter(3, OracleTypes.VARCHAR);
+            cst.execute();
+            applicationNo   = (String) cst.getObject(1);
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       return applicationNo;
+    }
+}

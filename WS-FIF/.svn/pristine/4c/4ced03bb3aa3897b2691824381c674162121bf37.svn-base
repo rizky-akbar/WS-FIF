@@ -1,0 +1,68 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+
+@Entity
+@Table(name = "FS_MST_RELIGIONS")
+public class ReligionModel {
+    @Id
+    private String RELG_ID;
+    private String DESCRIPTION;
+    private String AAB_CODE;
+
+    /**
+     * @return the RELG_ID
+     */
+    public String getRELG_ID() {
+        return RELG_ID;
+    }
+
+    /**
+     * @param RELG_ID the RELG_ID to set
+     */
+    public void setRELG_ID(String RELG_ID) {
+        this.RELG_ID = RELG_ID;
+    }
+
+    /**
+     * @return the DESCRIPTION
+     */
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
+    }
+
+    /**
+     * @param DESCRIPTION the DESCRIPTION to set
+     */
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
+    }
+
+    /**
+     * @return the AAB_CODE
+     */
+    public String getAAB_CODE() {
+        return AAB_CODE;
+    }
+
+    /**
+     * @param AAB_CODE the AAB_CODE to set
+     */
+    public void setAAB_CODE(String AAB_CODE) {
+        this.AAB_CODE = AAB_CODE;
+    }
+}

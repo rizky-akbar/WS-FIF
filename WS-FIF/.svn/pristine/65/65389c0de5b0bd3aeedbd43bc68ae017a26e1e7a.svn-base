@@ -1,0 +1,75 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.controller;
+
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ *
+ * @author dhamarsu
+ */
+
+@Controller
+public class TestController {
+    
+    
+    @RequestMapping(value = "/test/preorder", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BucketOrderDto> getMasterProvinsi(HttpSession session) {
+        List<BucketOrderDto> jsonData = new ArrayList<BucketOrderDto>();
+        BucketOrderDto bo = new BucketOrderDto();
+        bo.setAddress("JL PELAN PELAN");
+        bo.setBirthPlace("SOLO");
+        bo.setBirthdate("20130101000000");
+        bo.setBranchId("40300");
+        bo.setCity("SOLO");
+        bo.setCityCode("01");
+        bo.setComments("TEST");
+        bo.setCustomerMobilePhone1("0813999999");
+        bo.setCustomerMobilePhone2("08131");
+        bo.setCustomerName("DHAMARSU");
+        bo.setCustomerOfficePhone("08132");
+        bo.setCustomerOfficePhoneArea("0271");
+        bo.setCustomerPhone("08133");
+        bo.setCustomerPhoneArea("0271");
+        bo.setDealerId("H257");
+        bo.setDealerIdFif("VS-000021168");
+        bo.setDpAmount("500000");
+        bo.setIndentStatus("");
+        bo.setKecamatan("BANJARSARI");
+        bo.setKecamatanCode("");
+        bo.setKelurahan("NUSUKAN");
+        bo.setKelurahanCode("");
+        bo.setObjectType("A16");
+        bo.setObjectTypeFif("Z9999");
+        bo.setOrderDate("20140101000000");
+        bo.setProvinsi("JAWA TENGAH");
+        bo.setProvinsiCode("");
+        bo.setRT("00");
+        bo.setRW("00");
+        bo.setRecordId("1002");
+        bo.setSalesId("ACJ");
+        bo.setSourceInput("E");
+        bo.setSpk("SPK5368");
+        bo.setSubZip(null);
+        bo.setZip("57135");
+        
+        jsonData.add(bo);
+        bo.setRecordId("1000");
+        jsonData.add(bo);
+        bo.setRecordId("1001");
+        jsonData.add(bo);
+        return jsonData;
+    }
+}

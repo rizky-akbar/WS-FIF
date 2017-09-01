@@ -1,0 +1,221 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.order.dto;
+
+/**
+ *
+ * @author Administrator
+ */
+public class OrderFullObjectPembiayaan {
+
+    private String objectCode;
+    private String newUsed;
+    private String objectBrand;
+    private String objectModel;
+    private String objectType;
+    private String objectSize;
+    private String objectYear;
+    private String objectPrice;
+    private String quantity;
+    private String customerDp;
+    private String monthInstallment;
+    private String insuranceProduct;
+    private String insuranceRateNo;
+    private String serialNo;
+    private String nomerMesin;
+    private String nomerRangka;
+    private String nomerPolisi;
+    private String warna;
+    private String stnkDate;
+   
+    private ObjectPembiayaanSchemeObject schemeObject ;
+
+    public OrderFullObjectPembiayaan(String objectCode, String newUsed, String objectBrand, String objectModel, String objectType, String objectSize, String objectYear, String objectPrice, String quantity, String customerDp, String monthInstallment, String insuranceProduct, String insuranceRateNo, String serialNo, String nomerMesin, String nomerRangka, String nomerPolisi, String warna, String stnkDate, ObjectPembiayaanSchemeObject schemeObject ) {
+        this.objectCode = objectCode;
+        this.newUsed = newUsed;
+        this.objectBrand = objectBrand;
+        this.objectModel = objectModel;
+        this.objectType = objectType;
+        this.objectSize = objectSize;
+        this.objectYear = objectYear;
+        this.objectPrice = objectPrice;
+        this.quantity = quantity;
+        this.customerDp = customerDp;
+        this.monthInstallment = monthInstallment;
+        this.insuranceProduct = insuranceProduct;
+        this.insuranceRateNo = insuranceRateNo;
+        this.serialNo = serialNo;
+        this.nomerMesin = nomerMesin;
+        this.nomerRangka = nomerRangka;
+        this.nomerPolisi = nomerPolisi;
+        this.warna = warna;
+        this.stnkDate = stnkDate;
+        this.schemeObject  = schemeObject ;
+    }
+    
+    public OrderFullObjectPembiayaan() {
+    }
+
+    public String getObjectCode() {
+        return objectCode;
+    }
+
+    public void setObjectCode(String objectCode) {
+        this.objectCode = objectCode;
+    }
+
+    public String getNewUsed() {
+        return newUsed;
+    }
+
+    public void setNewUsed(String newUsed) {
+        this.newUsed = newUsed;
+    }
+
+    public String getObjectBrand() {
+        return objectBrand;
+    }
+
+    public void setObjectBrand(String objectBrand) {
+        this.objectBrand = objectBrand;
+    }
+
+    public String getObjectModel() {
+        return objectModel;
+    }
+
+    public void setObjectModel(String objectModel) {
+        this.objectModel = objectModel;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
+    public String getObjectSize() {
+        return objectSize;
+    }
+
+    public void setObjectSize(String objectSize) {
+        this.objectSize = objectSize;
+    }
+
+    public String getObjectYear() {
+        return objectYear;
+    }
+
+    public void setObjectYear(String objectYear) {
+        this.objectYear = objectYear;
+    }
+
+    public String getObjectPrice() {
+        return objectPrice;
+    }
+
+    public void setObjectPrice(String objectPrice) {
+        this.objectPrice = objectPrice;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getCustomerDp() {
+        return customerDp;
+    }
+
+    public void setCustomerDp(String customerDp) {
+        this.customerDp = customerDp;
+    }
+
+    public String getMonthInstallment() {
+        return monthInstallment;
+    }
+
+    public void setMonthInstallment(String monthInstallment) {
+        this.monthInstallment = monthInstallment;
+    }
+
+    public String getInsuranceProduct() {
+        return insuranceProduct;
+    }
+
+    public void setInsuranceProduct(String insuranceProduct) {
+        this.insuranceProduct = insuranceProduct;
+    }
+
+    public String getInsuranceRateNo() {
+        return insuranceRateNo;
+    }
+
+    public void setInsuranceRateNo(String insuranceRateNo) {
+        this.insuranceRateNo = insuranceRateNo;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    public String getNomerMesin() {
+        return nomerMesin;
+    }
+
+    public void setNomerMesin(String nomerMesin) {
+        this.nomerMesin = nomerMesin;
+    }
+
+    public String getNomerRangka() {
+        return nomerRangka;
+    }
+
+    public void setNomerRangka(String nomerRangka) {
+        this.nomerRangka = nomerRangka;
+    }
+
+    public String getNomerPolisi() {
+        return nomerPolisi;
+    }
+
+    public void setNomerPolisi(String nomerPolisi) {
+        this.nomerPolisi = nomerPolisi;
+    }
+
+    public String getWarna() {
+        return warna;
+    }
+
+    public void setWarna(String warna) {
+        this.warna = warna;
+    }
+
+    public String getStnkDate() {
+        return stnkDate;
+    }
+
+    public void setStnkDate(String stnkDate) {
+        this.stnkDate = stnkDate;
+    }
+
+     public ObjectPembiayaanSchemeObject getOpso() {
+        return schemeObject ;
+    }
+
+    public void setOpso(ObjectPembiayaanSchemeObject schemeObject ) {
+        this.schemeObject  = schemeObject ;
+    }
+}

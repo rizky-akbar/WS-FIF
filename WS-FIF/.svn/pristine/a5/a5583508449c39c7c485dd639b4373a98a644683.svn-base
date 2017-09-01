@@ -1,0 +1,47 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.util;
+
+import com.google.gson.Gson;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ *
+ * @author dhamarsu
+ */
+public class CommonUtil {
+    
+    Gson g = new Gson();
+    
+    public static SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+    
+    public static Date parseStringToDate(String x){
+        try{
+            return df.parse(x);
+        }catch(ParseException e){
+            return null;
+        }
+    }
+    
+    public static Double parseStringToDouble(String x){
+        try{
+            return Double.valueOf(x);
+        }catch(Exception e){
+            return Double.valueOf("0");
+        }
+    }
+    public static Long parseStringToLong(String x){
+        try{
+            return Long.valueOf(x);
+        }catch(Exception e){
+            return Long.valueOf("0");
+        }
+    }
+    
+}

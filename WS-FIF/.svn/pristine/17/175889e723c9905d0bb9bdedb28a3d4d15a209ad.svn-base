@@ -1,0 +1,23 @@
+hibernate.dialect = org.hibernate.dialect.OracleDialect
+jdbc.driver = oracle.jdbc.OracleDriver
+
+##Development
+jdbc.url = jdbc:oracle:thin:@10.17.33.42:1521:FIFAPPS
+jdbc.username = ORDMGMT
+jdbc.password = ORDMGMT
+
+##SMTP Google
+mail.host=smtp.gmail.com
+mail.port=587
+
+##Mail Properties Prod
+mail.username=
+mail.password=
+
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+##Prod
+mail.sender=
+
+##IMAP Prod
+mail.imap.url=

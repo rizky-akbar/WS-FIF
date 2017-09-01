@@ -1,0 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.master.dto;
+
+import java.util.List;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class DocumentDto {
+
+    private String documentCode;
+    private String documentDescription;
+    private List<OccupationTypeDto> occupationType;
+
+    public DocumentDto() {
+    }
+
+    public DocumentDto(String documentCode, String documentDescription, List<OccupationTypeDto> occupationType) {
+        this.documentCode = documentCode;
+        this.documentDescription = documentDescription;
+        this.occupationType = occupationType;
+    }
+    
+    public String getDocumentCode() {
+        return documentCode;
+    }
+
+    public void setDocumentCode(String documentCode) {
+        this.documentCode = documentCode;
+    }
+
+    public String getDocumentDescription() {
+        return documentDescription;
+    }
+
+    public void setDocumentDescription(String documentDescription) {
+        this.documentDescription = documentDescription;
+    }
+
+    public List<OccupationTypeDto> getOccupationType() {
+        return occupationType;
+    }
+
+    public void setOccupationType(List<OccupationTypeDto> occupationType) {
+        this.occupationType = occupationType;
+    }
+
+    
+
+   
+        
+}

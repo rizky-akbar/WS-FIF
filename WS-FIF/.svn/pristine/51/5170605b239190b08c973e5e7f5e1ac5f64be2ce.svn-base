@@ -1,0 +1,31 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.service.impl;
+
+import com.fif.ws.dao.BucketOrderDao;
+import com.fif.ws.model.master.BucketOrderFif;
+import com.fif.ws.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Service
+@Transactional(readOnly=true)
+public class TransactionServiceImpl implements TransactionService {
+
+    @Autowired
+    private BucketOrderDao bucketOrderDao;
+
+    @Transactional(readOnly=false)
+    public void insertBucketOrder(BucketOrderFif bucketOrderFif) {
+        bucketOrderDao.insertBucketOrder(bucketOrderFif);
+    }
+
+}

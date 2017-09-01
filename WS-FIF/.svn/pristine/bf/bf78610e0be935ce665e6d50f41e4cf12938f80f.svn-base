@@ -1,0 +1,218 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.controller;
+
+import com.fif.ws.model.dto.order.InvoiceHeaderDto;
+import com.fif.ws.model.master.BucketOrderFif;
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.model.dto.order.OrderFullHeaderDto;
+import com.fif.ws.model.master.dto.ResponseMessageMap;
+import com.fif.ws.service.TransactionService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+/**
+ *
+ * @author dhamarsu
+ */
+@Controller
+public class TransactionController {
+    
+    @Autowired
+    private TransactionService transactionService;
+    
+    @RequestMapping(value = "/preorder", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage savePreOrder(@RequestParam String order, HttpSession session) {
+        ResponseMessage resp = new ResponseMessage();
+        
+        try{
+            BucketOrderDto boDto = new BucketOrderDto();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<BucketOrderDto>>(){}.getType();
+            List<BucketOrderDto> lbo = gson.fromJson(order, type);
+            if(lbo.size() == 0){
+                return new ResponseMessage("11", "Invalid Parameter", "");
+            }
+            
+            String noRef = "|";
+            for(BucketOrderDto bo : lbo){
+                try{
+                    transactionService.insertBucketOrder(transformBucketOrder(bo));
+                    noRef = noRef + bo.getTransactionID()+ "|";
+                }catch(Exception e){
+                    e.printStackTrace();
+                    return new ResponseMessage("20", "Error Save Order", e.getMessage());
+                }
+            }
+            
+            return new ResponseMessage("00", "Success", noRef);    
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("10", "Error Parsing Parameter", e.getMessage());
+        }
+    }
+    
+    private SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+    
+    private BucketOrderFif transformBucketOrder(BucketOrderDto b) throws ParseException{
+        return new BucketOrderFif(Long.valueOf(b.getTransactionID()),b.getTransactionID() , df.parse(b.getOrderDate()),
+                b.getSalesId(), b.getDealerId(), b.getDealerIdFif(), b.getBranchId(), b.getCustomerName(),
+                b.getBirthPlace(),df.parse(b.getBirthdate()), b.getSex(), b.getBusinessUnit(), Long.valueOf(b.getDpAmount()),
+                Long.valueOf(b.getTop()), b.getObjectType(), b.getObjectTypeFif(), b.getAddress(), 
+                b.getZip(), b.getSubZip(), b.getProvinsiCode(), b.getProvinsi(), b.getCityCode(), 
+                b.getCity(), b.getKecamatanCode(), b.getKecamatan(), b.getKelurahanCode(), b.getKelurahan(),
+                b.getCustomerPhoneArea(), b.getCustomerOfficePhone(), b.getCustomerOfficePhoneArea(),
+                b.getCustomerOfficePhone(), b.getCustomerMobilePhone1(), b.getCustomerMobilePhone2(),
+                b.getHouseStatus(), b.getSpk(), b.getSourceInput(), b.getActOccpt(), b.getEducation(),
+                b.getMaritalStatus(), b.getComments(), b.getVirtualAccount(),b.getRT(),b.getRW());
+//        return new BucketOrderFif(Long.valueOf(b.getTransactionID()), b.getTransactionID(),
+//                b.getSalesId(), b.getDealerId(), b.getDealerIdFif(),df.parse(b.getOrderDate()),
+//                b.getBranchId(), b.getCustomerName(), b.getBirthPlace(),
+//                df.parse(b.getBirthdate()), b.getAddress(), b.getRT(), b.getRW(), b.getKelurahanCode(),
+//                b.getKelurahan(), b.getKecamatanCode(), b.getKecamatan(), b.getCityCode(),
+//                b.getCity(), b.getProvinsiCode(), b.getProvinsi(), b.getZip(), b.getSubZip(),
+                
+//                b.getObjectType(), b.getObjectTypeFif(), b.getSpk(), b.getSourceInput(), 
+//                Double.valueOf(b.getDpAmount()), b.getComments(), b.getIndentStatus(), "NW");
+                
+    }
+    
+    @RequestMapping(value = "/order/status", method = RequestMethod.GET)
+    @ResponseBody
+    public Map getTrackingOrder(@RequestParam String applicationNo, @RequestParam String sourceInput,
+            HttpSession session) {
+        try{
+            List<Map> l = transactionService.getTrackingOrder(applicationNo, sourceInput);
+            if(l.size() > 0){
+                return l.get(0);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return new HashMap();
+    }
+    
+    @RequestMapping(value = "/order/payment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage updatePaymentStatus(@RequestParam String transactionId,
+            @RequestParam String virtualAccount, @RequestParam String status,
+            @RequestParam String paymentAmount, @RequestParam String paymentDate,
+            @RequestParam String sourceInput, HttpSession session) {
+        ResponseMessage resp = new ResponseMessage();
+        String noRef = "";
+        try{
+            Double _amount = Double.valueOf(paymentAmount);
+            Date _tanggal = df.parse(paymentDate);
+            try{
+                transactionService.updatePaymentStatus(transactionId, virtualAccount, status, _amount, _tanggal, sourceInput);
+                noRef = transactionId;
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseMessage("20", "Error Update Payment Order", e.getMessage());
+            }
+            
+            return new ResponseMessage("00", "Success", noRef);    
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("10", "Error Parsing Parameter", e.getMessage());
+        }
+    }
+    
+    @RequestMapping(value = "/orderfull", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessageMap saveFullOrder(@RequestParam(required = false) String order, HttpSession session) {
+        ResponseMessageMap resp = new ResponseMessageMap();
+        
+        try{
+            OrderFullHeaderDto boDto = new OrderFullHeaderDto();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<OrderFullHeaderDto>>(){}.getType();
+            List<OrderFullHeaderDto> lbo = gson.fromJson(order, type);
+            if(lbo.size() == 0){
+                return new ResponseMessageMap("11", "Invalid Parameter", null);
+            }
+            
+            String noRef = "|";
+            for(OrderFullHeaderDto bo : lbo){
+                try{
+                    resp = transactionService.insertFullOrder(bo);
+                   if(resp.getResponseCode().equals("00")){
+                       ResponseMessage r = transactionService.approvePO( resp.getResponseRef().get(0).get("applNo").toString());
+                       return resp;
+                   }else{
+                       return resp;
+                   }
+                }catch(Exception e){
+                    e.printStackTrace();
+                    return new ResponseMessageMap("20", "Error Save Order", null);
+                }
+            }
+            
+            return new ResponseMessageMap("00", "Success", null);    
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessageMap("10", "Error Parsing Parameter", null);
+        }
+    }
+    
+    @RequestMapping(value = "/order/invoice", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage invoiceOrder(@RequestParam(required = false) String invoice, HttpSession session) {
+        ResponseMessage resp = new ResponseMessage();
+        
+        try{
+            InvoiceHeaderDto iDto = new InvoiceHeaderDto();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<InvoiceHeaderDto>>(){}.getType();
+            List<InvoiceHeaderDto> lbo = gson.fromJson(invoice, type);
+            if(lbo.size() == 0){
+                return new ResponseMessage("11", "Invalid Parameter", "");
+            }
+            
+            String noRef = "|";
+            for(InvoiceHeaderDto bo : lbo){
+                try{
+                    resp = transactionService.orderInvoice(bo);
+                    if(resp.getResponseCode().equals("00")){
+                        bo.setInvNo(resp.getResponseRef());
+                        return transactionService.invoiceDetailOrder(bo);
+                    }else{
+                        return resp;
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                    return new ResponseMessage("20", "Error Save Order", e.getMessage());
+                }
+            }
+            
+            return new ResponseMessage("00", "Success", noRef);    
+            
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("10", "Error Parsing Parameter", e.getMessage());
+        }
+    }
+}

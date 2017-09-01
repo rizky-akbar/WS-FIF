@@ -1,0 +1,127 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.master.dto;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class DealerNmcDto {
+
+    
+
+    private String dealerCode;
+    private String dealerBranchId;
+    private String dealerName;
+    private String address1;
+    private String address2;
+    private String city;
+    private String provinsi;
+    private String zipcode;
+    private String supplierType;
+    private String supplierGroupId;
+    private String supplierMainDealer;
+
+    public DealerNmcDto(String dealerCode, String dealerBranchId, String dealerName, String address1, String address2, String city, String provinsi, String zipcode, String supplierType, String supplierGroupId, String supplierMainDealer) {
+        this.dealerCode = dealerCode;
+        this.dealerBranchId = dealerBranchId;
+        this.dealerName = dealerName;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.provinsi = provinsi;
+        this.zipcode = zipcode;
+        this.supplierType = supplierType;
+        this.supplierGroupId = supplierGroupId;
+        this.supplierMainDealer = supplierMainDealer;
+    }
+
+    public DealerNmcDto() {
+    }
+
+    
+
+    public String getSupplierGroupId() {
+        return supplierGroupId;
+    }
+
+    public void setSupplierGroupId(String supplierGroupId) {
+        this.supplierGroupId = supplierGroupId;
+    }
+
+    public String getSupplierMainDealer() {
+        return supplierMainDealer;
+    }
+
+    public void setSupplierMainDealer(String supplierMainDealer) {
+        this.supplierMainDealer = supplierMainDealer;
+    }
+  
+    public String getDealerCode() {
+        return dealerCode;
+    }
+
+    public void setDealerCode(String dealerCode) {
+        this.dealerCode = dealerCode;
+    }
+
+    public String getDealerName() {
+        return dealerName;
+    }
+
+    public void setDealerName(String dealerName) {
+        this.dealerName = dealerName;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public void setAddress1(String address1) {
+        this.address1 = address1;
+    }
+
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getSupplierType() {
+        return supplierType;
+    }
+
+    public void setSupplierType(String supplierType) {
+        this.supplierType = supplierType;
+    }
+
+}

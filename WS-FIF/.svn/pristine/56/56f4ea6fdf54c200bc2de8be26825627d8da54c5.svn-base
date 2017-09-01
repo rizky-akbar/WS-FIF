@@ -1,0 +1,83 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.model.master.dto.UpdateBillingDto;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class UpdateBillingDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public ResponseMessage updateBilling(UpdateBillingDto u) {
+//        if(!u.getApplNo().isEmpty()){
+//            return new ResponseMessage("","",u.getApplNo());
+//        }
+        
+        String _sql_ = "select b.ID_CUST_ADDR,b.ID_CUST_CITY,b.ID_CUST_CITY_CODE,b.ID_CUST_KEC,b.ID_CUST_KEC_CODE,"
+                + "b.ID_CUST_KEL,b.ID_CUST_KEL_CODE,b.ID_CUST_PROV,"
+                + "b.ID_CUST_PROV_CODE,b.ID_CUST_RT,b.ID_CUST_RW,b.ID_CUST_SUB_ZIP,b.ID_CUST_ZIP,b.MAIL_ADDR,"
+                + "b.MAIL_CITY,b.MAIL_CITY_CODE,b.MAIL_EMAIL,"
+                + "b.MAIL_FAXIMILE,b.MAIL_FAX_AREA,b.MAIL_FIXPHONE,b.MAIL_FIXPH_AREA,b.MAIL_KEC,b.MAIL_KEC_CODE,"
+                + "b.MAIL_KEL,b.MAIL_KEL_CODE,b.MAIL_MOBPHONE,"
+                + "b.MAIL_MOBPHONE_2,b.MAIL_NAME,b.MAIL_PROV,b.MAIL_PROV_CODE,b.MAIL_RT,b.MAIL_RW,"
+                + "b.MAIL_ZIP,a.CUST_ADDR,a.CUST_CATEGORY,a.CUST_CITY,a.CUST_CITY_CODE,"
+                + "a.CUST_EMAIL,a.CUST_FAXIMILE,a.CUST_FAX_AREA,a.CUST_FIXPHONE,a.CUST_FIXPH_AREA,"
+                + "a.CUST_KEC,a.CUST_KEC_CODE,a.CUST_KEL,a.CUST_KEL_CODE,a.CUST_MOBPHONE,a.CUST_MOBPHONE_2,a.CUST_NAME,"
+                + "a.CUST_NO,a.CUST_PROV,a.CUST_PROV_CODE,"
+                + "a.CUST_RT,a.CUST_RW,a.CUST_SEX,a.CUST_SUB_ZIP,a.CUST_TITLE,"
+                + "a.CUST_TYPE_ID,a.CUST_ZIP,a.OFF_ADDR, a.OFF_CITY, a.OFF_CITY_CODE,a.OFF_EMAIL,"
+                + "a.OFF_FAXIMILE,a.OFF_FAX_AREA,a.OFF_FIXPHONE,a.OFF_FIXPH_AREA,a.OFF_FIXPH_EXT,a.OFF_KEC,a.OFF_KEC_CODE,a.OFF_KEL,"
+                + "a.OFF_KEL_CODE,a.OFF_MOBPHONE,a.OFF_MOBPHONE_2,a.OFF_PROV,a.OFF_PROV_CODE,a.OFF_RT,a.OFF_RW,a.OFF_TITLE,a.OFF_ZIP "
+                + "  from fifapps.fs_mst_cust_ind a, fifapps.fs_mst_cust b, ordmgmt.om_trn_appl_hdr c where c.appl_no=? and (a.cust_no=b.cust_no and a.cust_no=c.cust_no) ";
+        List<Map> lAddr = new ArrayList<Map>();
+        try {
+           lAddr= jdbcTemplate.query(_sql_, new RowMapper<Map>() {
+
+                public Map mapRow(ResultSet rs, int i) throws SQLException {
+                    Map d = new HashMap();
+                    d.put("ID_CUST_ADDR", rs.getString("ID_CUST_ADDR"));
+                    return d;
+                }
+            },new Object[]{u.getApplNo()});
+            if(lAddr.isEmpty()){
+                return new ResponseMessage("20", "ID_CUST_ADDR tidak ada", null);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("20", "error select addr", e.getMessage());
+        }
+        if(u.getBilling()=="HOME"||u.getBilling().equalsIgnoreCase("HOME")){
+            _sql_ = "update ordmgmt.om_trn_appl_addr set COLLEC_ADDR=? where appl_no=?";
+            try{
+                jdbcTemplate.update(_sql_, new Object[]{lAddr.get(0).get("ID_CUST_ADDR").toString(),u.getApplNo()});
+            }catch(Exception ex){
+                ex.printStackTrace();
+                return new ResponseMessage("22","error update addr",ex.getMessage());
+            }
+        }
+        return new ResponseMessage("00","success",u.getApplNo());
+    
+    }
+}
+ 

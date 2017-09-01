@@ -1,0 +1,102 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+
+@Entity
+@Table(name = "FS_MST_RELIGIONS")
+public class ReligionModel {
+    @Id
+    private String RELG_ID;
+    private String DESCRIPTION;
+    private String AAB_CODE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date CREATE_DATE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date UPDATE_DATE;
+
+    /**
+     * @return the RELG_ID
+     */
+    public String getRELG_ID() {
+        return RELG_ID;
+    }
+
+    /**
+     * @param RELG_ID the RELG_ID to set
+     */
+    public void setRELG_ID(String RELG_ID) {
+        this.RELG_ID = RELG_ID;
+    }
+
+    /**
+     * @return the DESCRIPTION
+     */
+    public String getDESCRIPTION() {
+        return DESCRIPTION;
+    }
+
+    /**
+     * @param DESCRIPTION the DESCRIPTION to set
+     */
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
+    }
+
+    /**
+     * @return the AAB_CODE
+     */
+    public String getAAB_CODE() {
+        return AAB_CODE;
+    }
+
+    /**
+     * @param AAB_CODE the AAB_CODE to set
+     */
+    public void setAAB_CODE(String AAB_CODE) {
+        this.AAB_CODE = AAB_CODE;
+    }
+
+    /**
+     * @return the CREATE_DATE
+     */
+    public Date getCREATE_DATE() {
+        return CREATE_DATE;
+    }
+
+    /**
+     * @param CREATE_DATE the CREATE_DATE to set
+     */
+    public void setCREATE_DATE(Date CREATE_DATE) {
+        this.CREATE_DATE = CREATE_DATE;
+    }
+
+    /**
+     * @return the UPDATE_DATE
+     */
+    public Date getUPDATE_DATE() {
+        return UPDATE_DATE;
+    }
+
+    /**
+     * @param UPDATE_DATE the UPDATE_DATE to set
+     */
+    public void setUPDATE_DATE(Date UPDATE_DATE) {
+        this.UPDATE_DATE = UPDATE_DATE;
+    }
+}

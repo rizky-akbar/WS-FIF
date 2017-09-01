@@ -1,0 +1,31 @@
+hibernate.dialect = org.hibernate.dialect.OracleDialect
+jdbc.driver = oracle.jdbc.OracleDriver
+
+##Development
+jdbc.url = jdbc:oracle:thin:@10.17.33.42:1521:FIFAPPS
+jdbc.username = ORDMGMT
+jdbc.password = ORDMGMT
+
+jdbc.url.fifws = jdbc:oracle:thin:@10.17.18.63:1521:ORCLDEV
+jdbc.username.fifws = FIFWS
+jdbc.password.fifws = FIFWS
+
+jdbc.url.fif220 = jdbc:oracle:thin:@10.17.33.220:1521:FIFAPPS
+jdbc.username.fif220 = FIFAPPS
+jdbc.password.fif220 = FIFAPPS
+
+##SMTP Google
+mail.host=smtp.gmail.com
+mail.port=587
+
+##Mail Properties Prod
+mail.username=
+mail.password=
+
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+##Prod
+mail.sender=
+
+##IMAP Prod
+mail.imap.url=

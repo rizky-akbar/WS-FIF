@@ -1,0 +1,49 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.service;
+
+
+import com.fif.ws.model.dto.order.InvoiceHeaderDto;
+import com.fif.ws.model.master.BucketOrderFif;
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.model.dto.order.OrderFullHeaderDto;
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import com.fif.ws.model.master.dto.ResponseMessageMap;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public interface TransactionService {
+
+    public ResponseMessage insertBucketOrder(BucketOrderDto orderDto);
+
+    public List<Map> getTrackingOrder(String transactionId, String sourceInput);
+
+    public void updatePaymentStatus(String transactionId, String virtualAccount, String status,
+            Double paymentAmount, Date paymentDate, String sourceInput);
+
+    public ResponseMessageMap insertFullOrder(OrderFullHeaderDto o);
+
+    public ResponseMessageMap approvePO(String applNo);
+
+    public ResponseMessage premiRate(String productNo, String branchId, int top, double totalAmount);
+
+    public ResponseMessage orderInvoice(InvoiceHeaderDto i);
+
+    public ResponseMessage invoiceDetailOrder(InvoiceHeaderDto i);
+
+    public void updateCustomerPhone(String custNo, String mobilePhone);
+    
+    public ResponseMessageMap scoreMeter(String applNo);
+    
+    public String getDealerIdByZip(String zip);
+
+    public String getServOffIdByZip(String zip);
+}

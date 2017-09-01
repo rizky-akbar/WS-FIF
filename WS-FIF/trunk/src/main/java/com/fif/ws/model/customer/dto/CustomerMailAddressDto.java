@@ -1,0 +1,122 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.customer.dto;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+public class CustomerMailAddressDto {
+    private String mailAddress;
+    private String mailRT;
+    private String mailRW;
+    private String mailKelurahan;
+    private String mailKecamatan;
+    private String mailCity;
+    private String mailProvinsi;
+    private String mailZip;
+    private String mailFixPhone;
+    private String mailMobilePhone;
+
+    public CustomerMailAddressDto() {
+    }
+
+    public CustomerMailAddressDto(String mailAddress, String mailRT, String mailRW, String mailKelurahan, String mailKecamatan, String mailCity, String mailProvinsi, String mailZip, String mailFixPhone, String mailMobilePhone) {
+        this.mailAddress = mailAddress;
+        this.mailRT = mailRT;
+        this.mailRW = mailRW;
+        this.mailKelurahan = mailKelurahan;
+        this.mailKecamatan = mailKecamatan;
+        this.mailCity = mailCity;
+        this.mailProvinsi = mailProvinsi;
+        this.mailZip = mailZip;
+        this.mailFixPhone = mailFixPhone;
+        this.mailMobilePhone = mailMobilePhone;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public String getMailRT() {
+        return mailRT;
+    }
+
+    public void setMailRT(String mailRT) {
+        this.mailRT = mailRT;
+    }
+
+    public String getMailRW() {
+        return mailRW;
+    }
+
+    public void setMailRW(String mailRW) {
+        this.mailRW = mailRW;
+    }
+
+    public String getMailKelurahan() {
+        return mailKelurahan;
+    }
+
+    public void setMailKelurahan(String mailKelurahan) {
+        this.mailKelurahan = mailKelurahan;
+    }
+
+    public String getMailKecamatan() {
+        return mailKecamatan;
+    }
+
+    public void setMailKecamatan(String mailKecamatan) {
+        this.mailKecamatan = mailKecamatan;
+    }
+
+    public String getMailCity() {
+        return mailCity;
+    }
+
+    public void setMailCity(String mailCity) {
+        this.mailCity = mailCity;
+    }
+
+    public String getMailProvinsi() {
+        return mailProvinsi;
+    }
+
+    public void setMailProvinsi(String mailProvinsi) {
+        this.mailProvinsi = mailProvinsi;
+    }
+
+    public String getMailZip() {
+        return mailZip;
+    }
+
+    public void setMailZip(String mailZip) {
+        this.mailZip = mailZip;
+    }
+
+    public String getMailFixPhone() {
+        return mailFixPhone;
+    }
+
+    public void setMailFixPhone(String mailFixPhone) {
+        this.mailFixPhone = mailFixPhone;
+    }
+
+    public String getMailMobilePhone() {
+        return mailMobilePhone;
+    }
+
+    public void setMailMobilePhone(String mailMobilePhone) {
+        this.mailMobilePhone = mailMobilePhone;
+    }
+
+    
+}

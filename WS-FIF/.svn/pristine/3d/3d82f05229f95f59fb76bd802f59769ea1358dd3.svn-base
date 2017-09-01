@@ -1,0 +1,597 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.master;
+
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "OM_BUCKET_ORDER_FIF")
+public class BucketOrderFif {
+
+    @Id
+    private Long ORDER_ID;
+    private String APLIKASI_ID;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date ORDER_DATE;
+    private String SALES_ID;
+    private String DEALER_ID;
+    private String DEALER_ID_FIF;
+    private String BRANCH_ID;
+    private String CUST_NAME;
+    private String BIRTH_PLACE;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date BIRTH_DATE;
+    private String SEX;
+    private String CUST_ADDRESS;
+    private String CUST_RT;
+    private String CUST_RW;
+    private String CUST_KEL_CODE;
+    private String CUST_KEL;
+    private String CUST_KEC_CODE;
+    private String CUST_KEC;
+    private String CUST_CITY_CODE;
+    private String CUST_CITY;
+    private String CUST_PROV_CODE;
+    private String CUST_PROV;
+    private String CUST_ZIP;
+    private String CUST_SUB_ZIP;
+    private String CUST_PHONE_AREA;
+    private String CUST_PHONE;
+    private String CUST_OFFPH_AREA;
+    private String CUST_OFFICE_PHONE;
+    private String CUST_MOBPHONE1;
+    private String CUST_MOBPHONE2;
+    private String OBJECT_TYPE;
+    private String OBJECT_TYPE_FIF;
+    private String SPK;
+    private String SOURCE_INPUT;
+    private Double DP_AMT;
+    private String COMMENTS;
+    private String INDENT_STATUS;
+    private String STATUS_ORDER;
+
+    public BucketOrderFif() {
+    }
+
+    public BucketOrderFif(Long ORDER_ID, String SALES_ID, String DEALER_ID, String DEALER_ID_FIF, Date ORDER_DATE, String BRANCH_ID, String CUST_NAME, String BIRTH_PLACE, Date BIRTH_DATE, String CUST_ADDRESS, String CUST_RT, String CUST_RW, String CUST_KEL_CODE, String CUST_KEL, String CUST_KEC_CODE, String CUST_KEC, String CUST_CITY_CODE, String CUST_CITY, String CUST_PROV_CODE, String CUST_PROV, String CUST_ZIP, String CUST_SUB_ZIP, String CUST_PHONE_AREA, String CUST_PHONE, String CUST_OFFPH_AREA, String CUST_OFFICE_PHONE, String CUST_MOBPHONE1, String CUST_MOBPHONE2, String OBJECT_TYPE, String OBJECT_TYPE_FIF, String SPK, String SOURCE_INPUT, Double DP_AMT, String COMMENTS, String INDENT_STATUS, String STATUS_ORDER) {
+        this.ORDER_ID = ORDER_ID;
+        this.SALES_ID = SALES_ID;
+        this.DEALER_ID = DEALER_ID;
+        this.DEALER_ID_FIF = DEALER_ID_FIF;
+        this.ORDER_DATE = ORDER_DATE;
+        this.BRANCH_ID = BRANCH_ID;
+        this.CUST_NAME = CUST_NAME;
+        this.BIRTH_PLACE = BIRTH_PLACE;
+        this.BIRTH_DATE = BIRTH_DATE;
+        this.CUST_ADDRESS = CUST_ADDRESS;
+        this.CUST_RT = CUST_RT;
+        this.CUST_RW = CUST_RW;
+        this.CUST_KEL_CODE = CUST_KEL_CODE;
+        this.CUST_KEL = CUST_KEL;
+        this.CUST_KEC_CODE = CUST_KEC_CODE;
+        this.CUST_KEC = CUST_KEC;
+        this.CUST_CITY_CODE = CUST_CITY_CODE;
+        this.CUST_CITY = CUST_CITY;
+        this.CUST_PROV_CODE = CUST_PROV_CODE;
+        this.CUST_PROV = CUST_PROV;
+        this.CUST_ZIP = CUST_ZIP;
+        this.CUST_SUB_ZIP = CUST_SUB_ZIP;
+        this.CUST_PHONE_AREA = CUST_PHONE_AREA;
+        this.CUST_PHONE = CUST_PHONE;
+        this.CUST_OFFPH_AREA = CUST_OFFPH_AREA;
+        this.CUST_OFFICE_PHONE = CUST_OFFICE_PHONE;
+        this.CUST_MOBPHONE1 = CUST_MOBPHONE1;
+        this.CUST_MOBPHONE2 = CUST_MOBPHONE2;
+        this.OBJECT_TYPE = OBJECT_TYPE;
+        this.OBJECT_TYPE_FIF = OBJECT_TYPE_FIF;
+        this.SPK = SPK;
+        this.SOURCE_INPUT = SOURCE_INPUT;
+        this.DP_AMT = DP_AMT;
+        this.COMMENTS = COMMENTS;
+        this.INDENT_STATUS = INDENT_STATUS;
+        this.STATUS_ORDER = STATUS_ORDER;
+    }
+
+    public String getSTATUS_ORDER() {
+        return STATUS_ORDER;
+    }
+
+    public void setSTATUS_ORDER(String STATUS_ORDER) {
+        this.STATUS_ORDER = STATUS_ORDER;
+    }
+
+    public Long getORDER_ID() {
+        return ORDER_ID;
+    }
+
+    public void setORDER_ID(Long ORDER_ID) {
+        this.ORDER_ID = ORDER_ID;
+    }
+
+    /**
+     * @return the SALES_ID
+     */
+    public String getSALES_ID() {
+        return SALES_ID;
+    }
+
+    /**
+     * @param SALES_ID the SALES_ID to set
+     */
+    public void setSALES_ID(String SALES_ID) {
+        this.SALES_ID = SALES_ID;
+    }
+
+    /**
+     * @return the DEALER_ID
+     */
+    public String getDEALER_ID() {
+        return DEALER_ID;
+    }
+
+    /**
+     * @param DEALER_ID the DEALER_ID to set
+     */
+    public void setDEALER_ID(String DEALER_ID) {
+        this.DEALER_ID = DEALER_ID;
+    }
+
+    /**
+     * @return the DEALER_ID_FIF
+     */
+    public String getDEALER_ID_FIF() {
+        return DEALER_ID_FIF;
+    }
+
+    /**
+     * @param DEALER_ID_FIF the DEALER_ID_FIF to set
+     */
+    public void setDEALER_ID_FIF(String DEALER_ID_FIF) {
+        this.DEALER_ID_FIF = DEALER_ID_FIF;
+    }
+
+    /**
+     * @return the ORDER_DATE
+     */
+    public Date getORDER_DATE() {
+        return ORDER_DATE;
+    }
+
+    /**
+     * @param ORDER_DATE the ORDER_DATE to set
+     */
+    public void setORDER_DATE(Date ORDER_DATE) {
+        this.ORDER_DATE = ORDER_DATE;
+    }
+
+    /**
+     * @return the BRANCH_ID
+     */
+    public String getBRANCH_ID() {
+        return BRANCH_ID;
+    }
+
+    /**
+     * @param BRANCH_ID the BRANCH_ID to set
+     */
+    public void setBRANCH_ID(String BRANCH_ID) {
+        this.BRANCH_ID = BRANCH_ID;
+    }
+
+    /**
+     * @return the CUST_NAME
+     */
+    public String getCUST_NAME() {
+        return CUST_NAME;
+    }
+
+    /**
+     * @param CUST_NAME the CUST_NAME to set
+     */
+    public void setCUST_NAME(String CUST_NAME) {
+        this.CUST_NAME = CUST_NAME;
+    }
+
+    /**
+     * @return the BIRTH_PLACE
+     */
+    public String getBIRTH_PLACE() {
+        return BIRTH_PLACE;
+    }
+
+    /**
+     * @param BIRTH_PLACE the BIRTH_PLACE to set
+     */
+    public void setBIRTH_PLACE(String BIRTH_PLACE) {
+        this.BIRTH_PLACE = BIRTH_PLACE;
+    }
+
+    /**
+     * @return the BIRTH_DATE
+     */
+    public Date getBIRTH_DATE() {
+        return BIRTH_DATE;
+    }
+
+    /**
+     * @param BIRTH_DATE the BIRTH_DATE to set
+     */
+    public void setBIRTH_DATE(Date BIRTH_DATE) {
+        this.BIRTH_DATE = BIRTH_DATE;
+    }
+
+    /**
+     * @return the CUST_ADDRESS
+     */
+    public String getCUST_ADDRESS() {
+        return CUST_ADDRESS;
+    }
+
+    /**
+     * @param CUST_ADDRESS the CUST_ADDRESS to set
+     */
+    public void setCUST_ADDRESS(String CUST_ADDRESS) {
+        this.CUST_ADDRESS = CUST_ADDRESS;
+    }
+
+    /**
+     * @return the CUST_RT
+     */
+    public String getCUST_RT() {
+        return CUST_RT;
+    }
+
+    /**
+     * @param CUST_RT the CUST_RT to set
+     */
+    public void setCUST_RT(String CUST_RT) {
+        this.CUST_RT = CUST_RT;
+    }
+
+    /**
+     * @return the CUST_RW
+     */
+    public String getCUST_RW() {
+        return CUST_RW;
+    }
+
+    /**
+     * @param CUST_RW the CUST_RW to set
+     */
+    public void setCUST_RW(String CUST_RW) {
+        this.CUST_RW = CUST_RW;
+    }
+
+    /**
+     * @return the CUST_KEL_CODE
+     */
+    public String getCUST_KEL_CODE() {
+        return CUST_KEL_CODE;
+    }
+
+    /**
+     * @param CUST_KEL_CODE the CUST_KEL_CODE to set
+     */
+    public void setCUST_KEL_CODE(String CUST_KEL_CODE) {
+        this.CUST_KEL_CODE = CUST_KEL_CODE;
+    }
+
+    /**
+     * @return the CUST_KEL
+     */
+    public String getCUST_KEL() {
+        return CUST_KEL;
+    }
+
+    /**
+     * @param CUST_KEL the CUST_KEL to set
+     */
+    public void setCUST_KEL(String CUST_KEL) {
+        this.CUST_KEL = CUST_KEL;
+    }
+
+    /**
+     * @return the CUST_KEC_CODE
+     */
+    public String getCUST_KEC_CODE() {
+        return CUST_KEC_CODE;
+    }
+
+    /**
+     * @param CUST_KEC_CODE the CUST_KEC_CODE to set
+     */
+    public void setCUST_KEC_CODE(String CUST_KEC_CODE) {
+        this.CUST_KEC_CODE = CUST_KEC_CODE;
+    }
+
+    /**
+     * @return the CUST_KEC
+     */
+    public String getCUST_KEC() {
+        return CUST_KEC;
+    }
+
+    /**
+     * @param CUST_KEC the CUST_KEC to set
+     */
+    public void setCUST_KEC(String CUST_KEC) {
+        this.CUST_KEC = CUST_KEC;
+    }
+
+    /**
+     * @return the CUST_CITY_CODE
+     */
+    public String getCUST_CITY_CODE() {
+        return CUST_CITY_CODE;
+    }
+
+    /**
+     * @param CUST_CITY_CODE the CUST_CITY_CODE to set
+     */
+    public void setCUST_CITY_CODE(String CUST_CITY_CODE) {
+        this.CUST_CITY_CODE = CUST_CITY_CODE;
+    }
+
+    /**
+     * @return the CUST_CITY
+     */
+    public String getCUST_CITY() {
+        return CUST_CITY;
+    }
+
+    /**
+     * @param CUST_CITY the CUST_CITY to set
+     */
+    public void setCUST_CITY(String CUST_CITY) {
+        this.CUST_CITY = CUST_CITY;
+    }
+
+    /**
+     * @return the CUST_PROV_CODE
+     */
+    public String getCUST_PROV_CODE() {
+        return CUST_PROV_CODE;
+    }
+
+    /**
+     * @param CUST_PROV_CODE the CUST_PROV_CODE to set
+     */
+    public void setCUST_PROV_CODE(String CUST_PROV_CODE) {
+        this.CUST_PROV_CODE = CUST_PROV_CODE;
+    }
+
+    /**
+     * @return the CUST_PROV
+     */
+    public String getCUST_PROV() {
+        return CUST_PROV;
+    }
+
+    /**
+     * @param CUST_PROV the CUST_PROV to set
+     */
+    public void setCUST_PROV(String CUST_PROV) {
+        this.CUST_PROV = CUST_PROV;
+    }
+
+    /**
+     * @return the CUST_ZIP
+     */
+    public String getCUST_ZIP() {
+        return CUST_ZIP;
+    }
+
+    /**
+     * @param CUST_ZIP the CUST_ZIP to set
+     */
+    public void setCUST_ZIP(String CUST_ZIP) {
+        this.CUST_ZIP = CUST_ZIP;
+    }
+
+    /**
+     * @return the CUST_SUB_ZIP
+     */
+    public String getCUST_SUB_ZIP() {
+        return CUST_SUB_ZIP;
+    }
+
+    /**
+     * @param CUST_SUB_ZIP the CUST_SUB_ZIP to set
+     */
+    public void setCUST_SUB_ZIP(String CUST_SUB_ZIP) {
+        this.CUST_SUB_ZIP = CUST_SUB_ZIP;
+    }
+
+    /**
+     * @return the CUST_PHONE_AREA
+     */
+    public String getCUST_PHONE_AREA() {
+        return CUST_PHONE_AREA;
+    }
+
+    /**
+     * @param CUST_PHONE_AREA the CUST_PHONE_AREA to set
+     */
+    public void setCUST_PHONE_AREA(String CUST_PHONE_AREA) {
+        this.CUST_PHONE_AREA = CUST_PHONE_AREA;
+    }
+
+    /**
+     * @return the CUST_PHONE
+     */
+    public String getCUST_PHONE() {
+        return CUST_PHONE;
+    }
+
+    /**
+     * @param CUST_PHONE the CUST_PHONE to set
+     */
+    public void setCUST_PHONE(String CUST_PHONE) {
+        this.CUST_PHONE = CUST_PHONE;
+    }
+
+    /**
+     * @return the CUST_OFFPH_AREA
+     */
+    public String getCUST_OFFPH_AREA() {
+        return CUST_OFFPH_AREA;
+    }
+
+    /**
+     * @param CUST_OFFPH_AREA the CUST_OFFPH_AREA to set
+     */
+    public void setCUST_OFFPH_AREA(String CUST_OFFPH_AREA) {
+        this.CUST_OFFPH_AREA = CUST_OFFPH_AREA;
+    }
+
+    /**
+     * @return the CUST_OFFICE_PHONE
+     */
+    public String getCUST_OFFICE_PHONE() {
+        return CUST_OFFICE_PHONE;
+    }
+
+    /**
+     * @param CUST_OFFICE_PHONE the CUST_OFFICE_PHONE to set
+     */
+    public void setCUST_OFFICE_PHONE(String CUST_OFFICE_PHONE) {
+        this.CUST_OFFICE_PHONE = CUST_OFFICE_PHONE;
+    }
+
+    /**
+     * @return the CUST_MOBPHONE1
+     */
+    public String getCUST_MOBPHONE1() {
+        return CUST_MOBPHONE1;
+    }
+
+    /**
+     * @param CUST_MOBPHONE1 the CUST_MOBPHONE1 to set
+     */
+    public void setCUST_MOBPHONE1(String CUST_MOBPHONE1) {
+        this.CUST_MOBPHONE1 = CUST_MOBPHONE1;
+    }
+
+    /**
+     * @return the CUST_MOBPHONE2
+     */
+    public String getCUST_MOBPHONE2() {
+        return CUST_MOBPHONE2;
+    }
+
+    /**
+     * @param CUST_MOBPHONE2 the CUST_MOBPHONE2 to set
+     */
+    public void setCUST_MOBPHONE2(String CUST_MOBPHONE2) {
+        this.CUST_MOBPHONE2 = CUST_MOBPHONE2;
+    }
+
+    /**
+     * @return the OBJECT_TYPE
+     */
+    public String getOBJECT_TYPE() {
+        return OBJECT_TYPE;
+    }
+
+    /**
+     * @param OBJECT_TYPE the OBJECT_TYPE to set
+     */
+    public void setOBJECT_TYPE(String OBJECT_TYPE) {
+        this.OBJECT_TYPE = OBJECT_TYPE;
+    }
+
+    /**
+     * @return the OBJECT_TYPE_FIF
+     */
+    public String getOBJECT_TYPE_FIF() {
+        return OBJECT_TYPE_FIF;
+    }
+
+    /**
+     * @param OBJECT_TYPE_FIF the OBJECT_TYPE_FIF to set
+     */
+    public void setOBJECT_TYPE_FIF(String OBJECT_TYPE_FIF) {
+        this.OBJECT_TYPE_FIF = OBJECT_TYPE_FIF;
+    }
+
+    /**
+     * @return the SPK
+     */
+    public String getSPK() {
+        return SPK;
+    }
+
+    /**
+     * @param SPK the SPK to set
+     */
+    public void setSPK(String SPK) {
+        this.SPK = SPK;
+    }
+
+    /**
+     * @return the SOURCE_INPUT
+     */
+    public String getSOURCE_INPUT() {
+        return SOURCE_INPUT;
+    }
+
+    /**
+     * @param SOURCE_INPUT the SOURCE_INPUT to set
+     */
+    public void setSOURCE_INPUT(String SOURCE_INPUT) {
+        this.SOURCE_INPUT = SOURCE_INPUT;
+    }
+
+    /**
+     * @return the DP_AMT
+     */
+    public Double getDP_AMT() {
+        return DP_AMT;
+    }
+
+    /**
+     * @param DP_AMT the DP_AMT to set
+     */
+    public void setDP_AMT(Double DP_AMT) {
+        this.DP_AMT = DP_AMT;
+    }
+
+    /**
+     * @return the COMMENTS
+     */
+    public String getCOMMENTS() {
+        return COMMENTS;
+    }
+
+    /**
+     * @param COMMENTS the COMMENTS to set
+     */
+    public void setCOMMENTS(String COMMENTS) {
+        this.COMMENTS = COMMENTS;
+    }
+
+    /**
+     * @return the INDENT_STATUS
+     */
+    public String getINDENT_STATUS() {
+        return INDENT_STATUS;
+    }
+
+    /**
+     * @param INDENT_STATUS the INDENT_STATUS to set
+     */
+    public void setINDENT_STATUS(String INDENT_STATUS) {
+        this.INDENT_STATUS = INDENT_STATUS;
+    }
+}

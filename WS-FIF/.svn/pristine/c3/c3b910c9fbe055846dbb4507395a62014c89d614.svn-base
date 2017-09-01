@@ -1,0 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+import com.fif.ws.model.master.BucketOrderFif;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author Administrator
+ */
+@Repository
+public class BucketOrderDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public void insertBucketOrder(BucketOrderFif bucketOrderFif) {
+        sessionFactory.getCurrentSession().save(bucketOrderFif);
+    }
+
+    public List<Map> getTrackingOrder(String transactionId, String sourceInput) {
+        String _sql = "select a.transactionid, b.event status, b.event message, to_char(b.time, 'YYYYMMDDHH24MISS') status_time "
+                + " from ORDMGMT.om_bucket_order_fif a, ORDMGMT.OM_TRN_LOG_APPL b"
+                + " where a.aplikasi_id = b.appl_no"
+                + " and a.transactionid = ?"
+                + " and a.source_input = ?"
+                + " and b.seq = (select max(seq) from ORDMGMT.OM_TRN_LOG_APPL c where c.appl_no = b.appl_no)"
+                + " order by b.time desc";
+
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("applicationNo", rs.getString("transactionid"));
+                h.put("status", rs.getString("status"));
+                h.put("message", rs.getString("message"));
+                h.put("statusTime", rs.getString("status_time"));
+                return h;
+            }
+        }, new Object[]{transactionId, sourceInput});
+    }
+
+    public void updatePaymentStatus(String transactionId, String virtualAccount, String status,
+            Double paymentAmount, Date paymentDate, String sourceInput) {
+        jdbcTemplate.update("insert into AP.AP_TRN_PAYMENT(TRANSACTIONID, VIRTUALACCOUNT, "
+                + "STATUS, PAYMENTAMOUNT, PAYMENTDATE, SOURCE_INPUT) values (?,?,?,?,?,?)",
+                new Object[]{transactionId, virtualAccount, status, paymentAmount, paymentDate, sourceInput});
+    }
+}

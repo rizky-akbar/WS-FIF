@@ -1,0 +1,163 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.dao;
+
+
+import com.fif.ws.model.master.BucketOrderFif;
+import com.fif.ws.model.master.dto.BucketOrderDto;
+import com.fif.ws.model.master.dto.ResponseMessage;
+import com.fif.ws.util.CommonUtil;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Repository
+public class BucketOrderDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public ResponseMessage insertBucketOrder(BucketOrderDto b) {
+     
+        ResponseMessage resp = new ResponseMessage();
+               
+        // select dealer_fif
+        String _sql= "select a.DEALER_CODE, a.SERV_OFFICE_CODE, b.OFFICE_CODE from fifapps.fs_mst_service_offices b, ordmgmt.om_mst_serv_office_zip a "
+                + "where a.serv_office_code = b.serv_office_code and a.zip_code=?";
+        List<Map> lMapCust = new ArrayList<Map>();
+        try{
+            lMapCust = jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+                public Map mapRow(ResultSet rs, int i) throws SQLException {
+                    Map m = new HashMap();
+                    m.put("DEALER_CODE", rs.getString("DEALER_CODE"));
+                    m.put("SERV_OFFICE_CODE", rs.getString("SERV_OFFICE_CODE"));
+                    m.put("OFFICE_CODE", rs.getString("OFFICE_CODE"));
+                    return m;
+                }
+            }, new Object[]{b.getZip()});
+            if(lMapCust.isEmpty()){
+                Map m = new HashMap();
+                m.put("DEALER_CODE", "1010009");
+                m.put("OFFICE_CODE", "00001");
+                m.put("SERV_OFFICE_CODE", "");
+                lMapCust.add(m);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseMessage("13", "Customer No tidak ditemukan, " + e.getMessage(), "benar");
+        }
+        
+        
+        //Insert Bucket Order
+        String _sql_ = "insert into ORDMGMT.OM_BUCKET_ORDER_FIF"
+                + " (ACTUAL_OCPT, BIRTH_DATE,"
+                + " BIRTH_PLACE, BRANCH_ID, BUSS_UNIT, "
+                + "COMMENTS, CREATED_BY, CREATED_DATE, CUST_ADDRESS, "
+                + "CUST_CITY, CUST_CITY_CODE, CUST_KEC, CUST_KEC_CODE, "
+                + "CUST_KEL, CUST_KEL_CODE, CUST_MOBPHONE1, CUST_MOBPHONE2, "
+                + "CUST_NAME, CUST_OFFICE_PHONE, CUST_OFFPH_AREA, CUST_PHONE, "
+                + "CUST_PHONE_AREA, CUST_PROV, CUST_PROV_CODE, CUST_RT, CUST_RW,"
+                + " CUST_SUB_ZIP, CUST_ZIP, DEALER_ID, DEALER_ID_FIF, DP_AMT, OBJECT_TYPE,"
+                + " OBJECT_TYPE_FIF, ORDER_DATE, PENDIDIKAN, SALES_ID, SERV_OFF_CODE, SEX,"
+                + " SOURCE_INPUT, STATUS_ORDER, STATUS_PERNIKAHAN, STATUS_RUMAH, TOP, TRANSACTIONID, "
+                + "VIRTUALACCOUNT, ORDER_ID, TOT_PROD_PRICE) "
+                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+                + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";  
+        try{
+            jdbcTemplate.update(_sql_, 
+                new Object[]{b.getActOccpt(), CommonUtil.df.parse(b.getBirthdate()),
+                        b.getBirthPlace(),lMapCust.get(0).get("OFFICE_CODE"), b.getBusinessUnit(), b.getComments(), "SYSTEM",
+                        new Date(), b.getAddress(), b.getCity(), b.getCityCode(), b.getKecamatan(), b.getKecamatanCode(),
+                        b.getKelurahan(), b.getKelurahanCode(), b.getCustomerMobilePhone1(), b.getCustomerMobilePhone2(),
+                        b.getCustomerName(), b.getCustomerOfficePhone(), b.getCustomerOfficePhoneArea(),
+                        b.getCustomerPhone(), b.getCustomerPhoneArea(), b.getProvinsi(), b.getProvinsiCode(), b.getRT(),
+                        b.getRW(), b.getSubZip(), b.getZip(), b.getDealerId(),lMapCust.get(0).get("DEALER_CODE") ,
+                        b.getDpAmount(), b.getObjectType(), b.getObjectTypeFif(), CommonUtil.df.parse(b.getOrderDate()),
+                        b.getEducation(), b.getSalesId(), lMapCust.get(0).get("SERV_OFFICE_CODE"), b.getSex(),
+                        b.getSourceInput(), "NW", b.getMaritalStatus(), b.getHouseStatus(), b.getTop(), b.getTransactionId(),
+                        b.getVirtualAccount(), Long.valueOf(b.getTransactionId()), b.getTotProdPrice()});
+        }catch(Exception e){
+            try {
+                e.printStackTrace();
+                _sql_="{call ORDMGMT.OM_P_LOG_ERR_WS (?,?,?)}";
+                Connection con = jdbcTemplate.getDataSource().getConnection();
+                CallableStatement cst = con.prepareCall(_sql_);
+                cst.setString(1, b.getTransactionId());
+                cst.setString(2, e.getMessage());
+                cst.setString(3, "X");
+                cst.execute();
+                
+                con.close();
+                return new ResponseMessage("21", "Error Save bucket, " + e.getMessage(), "");
+            } catch (SQLException ex) {
+                Logger.getLogger(BucketOrderDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return new ResponseMessage("21", "Error Save Bucket, "+ e.getMessage(),"");
+        }
+        return new ResponseMessage("00", "Success", b.getTransactionId());
+    }
+    public String getServOffIdByZip(String zip) {
+        return sessionFactory.getCurrentSession().
+                createQuery("select SERV_OFFICE_CODE from ServiceOfficeZipModel where ZIP=?").
+                setParameter(0, zip).toString();
+    }
+
+    public String getDealerIdByZip(String zip) {
+        return sessionFactory.getCurrentSession().
+                createQuery("select DEALER_CODE from ServiceOfficeZipModel where ZIP=?").
+                setParameter(0, zip).toString();
+    }
+
+    public List<Map> getTrackingOrder(String transactionId, String sourceInput) {
+        String _sql = "select a.transactionid, b.status_order , b.updated_date,'' message "
+                + "                from ORDMGMT.om_bucket_order_fif a, ORDMGMT.OM_BUCKET_TRACKING b"
+                + "                where a.aplikasi_id = b.appl_no"
+                + "                and a.transactionid = ?"
+                + "                and a.source_input = ?"
+                + "                order by b.updated_date desc";
+
+        return jdbcTemplate.query(_sql, new RowMapper<Map>() {
+
+            public Map mapRow(ResultSet rs, int i) throws SQLException {
+                Map h = new HashMap();
+                h.put("transactionid", rs.getString("transactionid"));
+                h.put("status", rs.getString("status_order"));
+                h.put("message", rs.getString("message"));
+                h.put("statusTime", rs.getString("updated_date"));
+                return h;
+            }
+        }, new Object[]{transactionId, sourceInput});
+    }
+
+    public void updatePaymentStatus(String transactionId, String virtualAccount, String status,
+            Double paymentAmount, Date paymentDate, String sourceInput) {
+        jdbcTemplate.update("insert into AP.AP_TRN_VIRTUAL_PAYMENT(TRANSACTIONID, VIRTUALACCOUNT, "
+                + "STATUS, PAYMENTAMOUNT, PAYMENTDATE, SOURCE_INPUT) values (?,?,?,?,?,?)",
+                new Object[]{transactionId, virtualAccount, status, paymentAmount, paymentDate, sourceInput});
+    }
+}

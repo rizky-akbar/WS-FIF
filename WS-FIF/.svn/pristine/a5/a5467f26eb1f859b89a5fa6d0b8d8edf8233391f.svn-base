@@ -1,0 +1,268 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.fif.ws.model.master;
+
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+/**
+ *
+ * @author RizkyAkbar
+ */
+@Entity
+@Table(name = "OM_MST_OBJ_CODE")
+public class ObjectCodesModel {
+    
+    @Id
+    private String OBJ_CODE;
+    private String OBJ_GRP;
+    private String OBJ_DESCR;
+    private String OBJ_BRAND;
+    private String OBJ_MODEL;
+    private String OBJ_TYPE;
+    private String OBJ_SIZE;
+    private String OBJ_MAKE;
+    private String BRANCH_ID;
+    private String CATEGORY_ID;
+    private String NEED_ADD_COLL;
+    private String NEW_USED;
+    private String IS_VEHICLE;
+    private String CODE_AHM;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date CREATE_DATE ;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date UPDATE_DATE ;
+    
+    /**
+     * @return the OBJ_CODE
+     */
+    public String getOBJ_CODE() {
+        return OBJ_CODE;
+    }
+
+    /**
+     * @param OBJ_CODE the OBJ_CODE to set
+     */
+    public void setOBJ_CODE(String OBJ_CODE) {
+        this.OBJ_CODE = OBJ_CODE;
+    }
+
+    /**
+     * @return the OBJ_GRP
+     */
+    public String getOBJ_GRP() {
+        return OBJ_GRP;
+    }
+
+    /**
+     * @param OBJ_GRP the OBJ_GRP to set
+     */
+    public void setOBJ_GRP(String OBJ_GRP) {
+        this.OBJ_GRP = OBJ_GRP;
+    }
+
+    /**
+     * @return the OBJ_DESCR
+     */
+    public String getOBJ_DESCR() {
+        return OBJ_DESCR;
+    }
+
+    /**
+     * @param OBJ_DESCR the OBJ_DESCR to set
+     */
+    public void setOBJ_DESCR(String OBJ_DESCR) {
+        this.OBJ_DESCR = OBJ_DESCR;
+    }
+
+    /**
+     * @return the OBJ_BRAND
+     */
+    public String getOBJ_BRAND() {
+        return OBJ_BRAND;
+    }
+
+    /**
+     * @param OBJ_BRAND the OBJ_BRAND to set
+     */
+    public void setOBJ_BRAND(String OBJ_BRAND) {
+        this.OBJ_BRAND = OBJ_BRAND;
+    }
+
+    /**
+     * @return the OBJ_MODEL
+     */
+    public String getOBJ_MODEL() {
+        return OBJ_MODEL;
+    }
+
+    /**
+     * @param OBJ_MODEL the OBJ_MODEL to set
+     */
+    public void setOBJ_MODEL(String OBJ_MODEL) {
+        this.OBJ_MODEL = OBJ_MODEL;
+    }
+
+    /**
+     * @return the OBJ_TYPE
+     */
+    public String getOBJ_TYPE() {
+        return OBJ_TYPE;
+    }
+
+    /**
+     * @param OBJ_TYPE the OBJ_TYPE to set
+     */
+    public void setOBJ_TYPE(String OBJ_TYPE) {
+        this.OBJ_TYPE = OBJ_TYPE;
+    }
+
+    /**
+     * @return the OBJ_SIZE
+     */
+    public String getOBJ_SIZE() {
+        return OBJ_SIZE;
+    }
+
+    /**
+     * @param OBJ_SIZE the OBJ_SIZE to set
+     */
+    public void setOBJ_SIZE(String OBJ_SIZE) {
+        this.OBJ_SIZE = OBJ_SIZE;
+    }
+
+    /**
+     * @return the OBJ_MAKE
+     */
+    public String getOBJ_MAKE() {
+        return OBJ_MAKE;
+    }
+
+    /**
+     * @param OBJ_MAKE the OBJ_MAKE to set
+     */
+    public void setOBJ_MAKE(String OBJ_MAKE) {
+        this.OBJ_MAKE = OBJ_MAKE;
+    }
+
+    /**
+     * @return the BRANCH_ID
+     */
+    public String getBRANCH_ID() {
+        return BRANCH_ID;
+    }
+
+    /**
+     * @param BRANCH_ID the BRANCH_ID to set
+     */
+    public void setBRANCH_ID(String BRANCH_ID) {
+        this.BRANCH_ID = BRANCH_ID;
+    }
+
+    /**
+     * @return the CATEGORY_ID
+     */
+    public String getCATEGORY_ID() {
+        return CATEGORY_ID;
+    }
+
+    /**
+     * @param CATEGORY_ID the CATEGORY_ID to set
+     */
+    public void setCATEGORY_ID(String CATEGORY_ID) {
+        this.CATEGORY_ID = CATEGORY_ID;
+    }
+
+    /**
+     * @return the NEED_ADD_COLL
+     */
+    public String getNEED_ADD_COLL() {
+        return NEED_ADD_COLL;
+    }
+
+    /**
+     * @param NEED_ADD_COLL the NEED_ADD_COLL to set
+     */
+    public void setNEED_ADD_COLL(String NEED_ADD_COLL) {
+        this.NEED_ADD_COLL = NEED_ADD_COLL;
+    }
+
+    /**
+     * @return the NEW_USED
+     */
+    public String getNEW_USED() {
+        return NEW_USED;
+    }
+
+    /**
+     * @param NEW_USED the NEW_USED to set
+     */
+    public void setNEW_USED(String NEW_USED) {
+        this.NEW_USED = NEW_USED;
+    }
+
+    /**
+     * @return the IS_VEHICLE
+     */
+    public String getIS_VEHICLE() {
+        return IS_VEHICLE;
+    }
+
+    /**
+     * @param IS_VEHICLE the IS_VEHICLE to set
+     */
+    public void setIS_VEHICLE(String IS_VEHICLE) {
+        this.IS_VEHICLE = IS_VEHICLE;
+    }
+
+    /**
+     * @return the CODE_AHM
+     */
+    public String getCODE_AHM() {
+        return CODE_AHM;
+    }
+
+    /**
+     * @param CODE_AHM the CODE_AHM to set
+     */
+    public void setCODE_AHM(String CODE_AHM) {
+        this.CODE_AHM = CODE_AHM;
+    }
+
+    /**
+     * @return the CREATE_DATE
+     */
+    public Date getCREATE_DATE() {
+        return CREATE_DATE;
+    }
+
+    /**
+     * @param CREATE_DATE the CREATE_DATE to set
+     */
+    public void setCREATE_DATE(Date CREATE_DATE) {
+        this.CREATE_DATE = CREATE_DATE;
+    }
+
+    /**
+     * @return the UPDATE_DATE
+     */
+    public Date getUPDATE_DATE() {
+        return UPDATE_DATE;
+    }
+
+    /**
+     * @param UPDATE_DATE the UPDATE_DATE to set
+     */
+    public void setUPDATE_DATE(Date UPDATE_DATE) {
+        this.UPDATE_DATE = UPDATE_DATE;
+    }
+
+    
+}

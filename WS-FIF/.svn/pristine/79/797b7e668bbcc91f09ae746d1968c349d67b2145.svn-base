@@ -1,0 +1,381 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.fif.ws.model.master.dto;
+
+/**
+ *
+ * @author Administrator
+ */
+public class BucketOrderDto {
+
+    private String recordId;
+    private String salesId;
+    private String dealerId;
+    private String dealerIdFif;
+    private String orderDate;
+    private String branchId;
+    private String customerName;
+    private String birthPlace;
+    private String birthdate;
+    private String address;
+    private String RT;
+    private String RW;
+    private String kelurahanCode;
+    private String kelurahan;
+    private String kecamatanCode;
+    private String kecamatan;
+    private String cityCode;
+    private String city;
+    private String provinsiCode;
+    private String provinsi;
+    private String zip;
+    private String subZip;
+    private String customerPhoneArea;
+    private String customerPhone;
+    private String customerOfficePhoneArea;
+    private String customerOfficePhone;
+    private String customerMobilePhone1;
+    private String customerMobilePhone2;
+    private String objectType;
+    private String objectTypeFif;
+    private String spk;
+    private String sourceInput;
+    private String dpAmount;
+    private String comments;
+    private String indentStatus;
+    
+    private String sex;
+    private String orderId;
+    private String top;
+    private String virtualAccount;
+
+    public BucketOrderDto() {
+    }
+
+    public BucketOrderDto(String recordId, String salesId, String dealerId, String dealerIdFif, String orderDate, String branchId, String customerName, String birthPlace, String birthdate, String address, String RT, String RW, String kelurahanCode, String kelurahan, String kecamatanCode, String kecamatan, String cityCode, String city, String provinsiCode, String provinsi, String zip, String subZip, String customerPhoneArea, String customerPhone, String customerOfficePhoneArea, String customerOfficePhone, String customerMobilePhone1, String customerMobilePhone2, String objectType, String objectTypeFif, String spk, String sourceInput, String dpAmount, String comments, String indentStatus, String sex, String orderId, String top, String virtualAccount) {
+        this.recordId = recordId;
+        this.salesId = salesId;
+        this.dealerId = dealerId;
+        this.dealerIdFif = dealerIdFif;
+        this.orderDate = orderDate;
+        this.branchId = branchId;
+        this.customerName = customerName;
+        this.birthPlace = birthPlace;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.RT = RT;
+        this.RW = RW;
+        this.kelurahanCode = kelurahanCode;
+        this.kelurahan = kelurahan;
+        this.kecamatanCode = kecamatanCode;
+        this.kecamatan = kecamatan;
+        this.cityCode = cityCode;
+        this.city = city;
+        this.provinsiCode = provinsiCode;
+        this.provinsi = provinsi;
+        this.zip = zip;
+        this.subZip = subZip;
+        this.customerPhoneArea = customerPhoneArea;
+        this.customerPhone = customerPhone;
+        this.customerOfficePhoneArea = customerOfficePhoneArea;
+        this.customerOfficePhone = customerOfficePhone;
+        this.customerMobilePhone1 = customerMobilePhone1;
+        this.customerMobilePhone2 = customerMobilePhone2;
+        this.objectType = objectType;
+        this.objectTypeFif = objectTypeFif;
+        this.spk = spk;
+        this.sourceInput = sourceInput;
+        this.dpAmount = dpAmount;
+        this.comments = comments;
+        this.indentStatus = indentStatus;
+        this.sex = sex;
+        this.orderId = orderId;
+        this.top = top;
+        this.virtualAccount = virtualAccount;
+    }
+
+    
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(String recordId) {
+        this.recordId = recordId;
+    }
+
+    public String getSalesId() {
+        return salesId;
+    }
+
+    public void setSalesId(String salesId) {
+        this.salesId = salesId;
+    }
+
+    public String getDealerId() {
+        return dealerId;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
+    public String getDealerIdFif() {
+        return dealerIdFif;
+    }
+
+    public void setDealerIdFif(String dealerIdFif) {
+        this.dealerIdFif = dealerIdFif;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setBirthPlace(String birthPlace) {
+        this.birthPlace = birthPlace;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRT() {
+        return RT;
+    }
+
+    public void setRT(String RT) {
+        this.RT = RT;
+    }
+
+    public String getRW() {
+        return RW;
+    }
+
+    public void setRW(String RW) {
+        this.RW = RW;
+    }
+
+    public String getKelurahanCode() {
+        return kelurahanCode;
+    }
+
+    public void setKelurahanCode(String kelurahanCode) {
+        this.kelurahanCode = kelurahanCode;
+    }
+
+    public String getKelurahan() {
+        return kelurahan;
+    }
+
+    public void setKelurahan(String kelurahan) {
+        this.kelurahan = kelurahan;
+    }
+
+    public String getKecamatanCode() {
+        return kecamatanCode;
+    }
+
+    public void setKecamatanCode(String kecamatanCode) {
+        this.kecamatanCode = kecamatanCode;
+    }
+
+    public String getKecamatan() {
+        return kecamatan;
+    }
+
+    public void setKecamatan(String kecamatan) {
+        this.kecamatan = kecamatan;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvinsiCode() {
+        return provinsiCode;
+    }
+
+    public void setProvinsiCode(String provinsiCode) {
+        this.provinsiCode = provinsiCode;
+    }
+
+    public String getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(String provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getSubZip() {
+        return subZip;
+    }
+
+    public void setSubZip(String subZip) {
+        this.subZip = subZip;
+    }
+
+    public String getCustomerPhoneArea() {
+        return customerPhoneArea;
+    }
+
+    public void setCustomerPhoneArea(String customerPhoneArea) {
+        this.customerPhoneArea = customerPhoneArea;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public String getCustomerOfficePhoneArea() {
+        return customerOfficePhoneArea;
+    }
+
+    public void setCustomerOfficePhoneArea(String customerOfficePhoneArea) {
+        this.customerOfficePhoneArea = customerOfficePhoneArea;
+    }
+
+    public String getCustomerOfficePhone() {
+        return customerOfficePhone;
+    }
+
+    public void setCustomerOfficePhone(String customerOfficePhone) {
+        this.customerOfficePhone = customerOfficePhone;
+    }
+
+    public String getCustomerMobilePhone1() {
+        return customerMobilePhone1;
+    }
+
+    public void setCustomerMobilePhone1(String customerMobilePhone1) {
+        this.customerMobilePhone1 = customerMobilePhone1;
+    }
+
+    public String getCustomerMobilePhone2() {
+        return customerMobilePhone2;
+    }
+
+    public void setCustomerMobilePhone2(String customerMobilePhone2) {
+        this.customerMobilePhone2 = customerMobilePhone2;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
+    }
+
+    public String getObjectTypeFif() {
+        return objectTypeFif;
+    }
+
+    public void setObjectTypeFif(String objectTypeFif) {
+        this.objectTypeFif = objectTypeFif;
+    }
+
+    public String getSpk() {
+        return spk;
+    }
+
+    public void setSpk(String spk) {
+        this.spk = spk;
+    }
+
+    public String getSourceInput() {
+        return sourceInput;
+    }
+
+    public void setSourceInput(String sourceInput) {
+        this.sourceInput = sourceInput;
+    }
+
+    public String getDpAmount() {
+        return dpAmount;
+    }
+
+    public void setDpAmount(String dpAmount) {
+        this.dpAmount = dpAmount;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getIndentStatus() {
+        return indentStatus;
+    }
+
+    public void setIndentStatus(String indentStatus) {
+        this.indentStatus = indentStatus;
+    }
+}
